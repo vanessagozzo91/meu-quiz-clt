@@ -109,6 +109,8 @@
             margin-top: 15px;
             box-sizing: border-box;
             text-align: center;
+            /* Adicionado estilo para feedback de erro */
+            transition: border 0.3s, box-shadow 0.3s; 
         }
 
         /* Mensagens finais */
@@ -208,10 +210,15 @@
             <p class="result-text text-lg">Obrigado pelo seu interesse! No momento, seu perfil não atende aos requisitos mínimos de crédito Consignado CLT.</p>
         </div>
     </div>
+    
+    <!-- Iframe Oculto para Submissão Assíncrona do Formulário CAPI -->
+    <!-- Este iframe evita que a página recarregue ao enviar o lead para o Apps Script -->
+    <iframe name="iframeLeadTarget" id="iframeLeadTarget" style="display:none;"></iframe>
+
 
     <script>
         const WHATSAPP_PHONE = '5514974000725'; 
-        // ⭐️ URL ATUALIZADA DO APPS SCRIPT: Removido o envio de Q1 e Q2 para manter a planilha limpa.
+        // ⭐️ URL ATUALIZADA DO APPS SCRIPT FORNECIDA POR VOCÊ
         const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwa741GFr8uclrmbROGNECNLE8vGBF-oLKqOofHRAyHQqF0CqpNxvKCqDIAWq9BZjIFvA/exec'; 
         
         const totalSteps = 3; 
@@ -220,6 +227,7 @@
         let quizData = {};
         
         const cpfInput = document.getElementById('cpf-input');
+        // Máscara de CPF
         const cpfMask = IMask(cpfInput, { mask: '000.000.000-00' });
 
         function updateStepIndicator() {
@@ -234,7 +242,7 @@
         function nextQuestion(step, button) {
             const answer = button.getAttribute('data-answer');
             
-            // Lógica de desqualificação (Mantida para redirecionar o reprovado)
+            // Lógica de desqualificação (Mantida)
             if (step === 1 && answer === "Menos de 6 meses") {
                 showFail();
                 return;
@@ -277,6 +285,7 @@
 
 
         // FUNÇÃO FINAL DE ENVIO CAPI E REDIRECIONAMENTO
+        
         function generateWhatsAppURL() {
             const cpfFormatado = quizData.cpf_formatado || 'Não Informado';
             
@@ -287,22 +296,18 @@
 
         function redirectToWhatsApp() {
             const whatsappUrl = generateWhatsAppURL();
+            
+            // Tenta o redirecionamento mais forte para sair do Iframe e redirecionar a página principal.
             try {
-                // Tenta redirecionar a página inteira (CRUCIAL para o Google Sites/Iframe)
-                window.parent.location.href = whatsappUrl; 
+                window.top.location.href = whatsappUrl; 
             } catch (e) {
-                // Se o iframe bloquear, redireciona o iframe (último recurso)
-                console.error("Redirecionamento bloqueado pelo Iframe, tentando redirecionar o Iframe.");
+                // Se for bloqueado, usa a janela atual como fallback.
+                console.error("Redirecionamento bloqueado. Usando fallback de janela.");
                 window.location.href = whatsappUrl;
             }
         }
 
-
-        function sendLeadAndRedirect() {
-            // 1. DISPARA O EVENTO DE LEAD NO PIXEL (Navegador) 
-            fbq('track', 'Lead'); 
-            
-            // 2. CAPTURA PARÂMETROS PARA O APPS SCRIPT (CAPI)
+        function getTrackingParams() {
             let params = {};
             try {
                 // Tenta pegar a URL do site pai (Google Sites)
@@ -312,6 +317,45 @@
                 console.warn("Não foi possível acessar a URL pai. Usando a URL atual do Iframe.");
                 params = new URL(window.location.href).searchParams;
             }
+            return params;
+        }
+
+        // NOVO: Função para enviar o Lead via submissão de formulário (Mais robusto que fetch no Iframe)
+        function sendLeadFormSubmission(dadosLead) {
+            // Cria um formulário dinâmico
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = APPS_SCRIPT_URL;
+            form.target = 'iframeLeadTarget'; // Direciona a submissão para o iframe oculto
+            form.style.display = 'none';
+
+            // Adiciona campos ocultos ao formulário
+            for (const key in dadosLead) {
+                if (dadosLead.hasOwnProperty(key)) {
+                    const input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = key;
+                    input.value = dadosLead[key];
+                    form.appendChild(input);
+                }
+            }
+
+            document.body.appendChild(form);
+
+            // Submete o formulário
+            form.submit();
+            console.log('Lead enviado via submissão de formulário (CAPI).');
+            
+            // Remove o formulário após a submissão
+            setTimeout(() => form.remove(), 1000);
+        }
+
+        function sendLeadAndRedirect() {
+            // 1. DISPARA O EVENTO DE LEAD NO PIXEL (Navegador) 
+            fbq('track', 'Lead'); 
+            
+            // 2. CAPTURA PARÂMETROS
+            const params = getTrackingParams();
             
             // Monta o objeto final de dados para o Apps Script (APENAS CPF E RASTREIO)
             const dadosLead = {
@@ -321,26 +365,16 @@
                 utm_campaign: params.get("utm_campaign") || '',
                 ad_id: params.get("ad_id") || '',
                 user_agent: navigator.userAgent
-                // AS RESPOSTAS DO QUIZ NÃO SÃO MAIS ENVIADAS PARA O SERVIDOR
             };
 
-            // 3. ENVIA LEAD PARA O APPS SCRIPT (CAPI Server)
-            fetch(APPS_SCRIPT_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: new URLSearchParams(dadosLead).toString()
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Apps Script Response (CAPI Lead):', data);
-                // 4. REDIRECIONA APÓS A RESPOSTA (SUCESSO)
+            // 3. ENVIA LEAD PARA O APPS SCRIPT (CAPI Server) usando submissão de formulário robusta
+            sendLeadFormSubmission(dadosLead);
+
+            // 4. REDIRECIONA PARA O WHATSAPP
+            // Damos um pequeno atraso para garantir que a submissão da forma inicie antes de redirecionar.
+            setTimeout(() => {
                 redirectToWhatsApp();
-            })
-            .catch(error => {
-                // 4b. REDIRECIONA MESMO EM CASO DE FALHA DE CONEXÃO COM O SERVIDOR
-                console.error('Erro no envio ao Servidor CAPI, mas redirecionando o usuário para o WhatsApp:', error);
-                redirectToWhatsApp();
-            });
+            }, 300);
         }
 
         function showFail() {
