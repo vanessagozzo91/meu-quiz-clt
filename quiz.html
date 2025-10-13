@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/imask"></script>
     
+    <!-- Pixel do Facebook -->
     <script>
         !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window, document,'script','https://connect.facebook.com/en_US/fbevents.js');fbq('init', '1406224567314703');fbq('track', 'PageView');
     </script>
@@ -14,6 +15,7 @@
         <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1406224567314703&ev=PageView&noscript=1"/>
     </noscript>
 
+    <!-- CSS (Estilos) -->
     <style>
         /* Fundo da página em Cinza Claro */
         body { 
@@ -174,13 +176,13 @@
         <div id="step-info" class="step-indicator"></div>
 
         <div id="quizQuestions">
-            <div id="question1" class="question" data-step="1">
+            <div id="question1" class="question" data-step="1" data-q-key="q1">
                 <h3>Quantos meses você está registrado no seu emprego atual?</h3>
                 <button class="option-btn" data-answer="Menos de 6 meses" onclick="nextQuestion(1, this)">Menos de 6 meses</button>
                 <button class="option-btn" data-answer="6 meses ou mais" onclick="nextQuestion(1, this)">6 meses ou mais</button>
             </div>
 
-            <div id="question2" class="question hidden" data-step="2">
+            <div id="question2" class="question hidden" data-step="2" data-q-key="q2">
                 <h3>Você já realizou algum empréstimo consignado CLT?</h3>
                 <button class="option-btn" data-answer="Já realizei" onclick="nextQuestion(2, this)">Já realizei</button>
                 <button class="option-btn" data-answer="Ainda não" onclick="nextQuestion(2, this)">Ainda não</button>
@@ -209,12 +211,12 @@
 
     <script>
         const WHATSAPP_PHONE = '5514974000725'; 
-        // ⭐️ URL DE IMPLANTAÇÃO CAPI FINALIZADA - MANTIDA
-        // (Use esta se for a que funcionava para o WhatsApp. Se não funcionar, teremos que usar a nova e garantir que tenha aspas).
+        // ⭐️ URL ATUALIZADA DO APPS SCRIPT: Removido o envio de Q1 e Q2 para manter a planilha limpa.
         const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwa741GFr8uclrmbROGNECNLE8vGBF-oLKqOofHRAyHQqF0CqpNxvKCqDIAWq9BZjIFvA/exec'; 
         
         const totalSteps = 3; 
         let currentStep = 1;
+        // Objeto para armazenar APENAS o CPF e os dados de rastreio.
         let quizData = {};
         
         const cpfInput = document.getElementById('cpf-input');
@@ -231,10 +233,8 @@
 
         function nextQuestion(step, button) {
             const answer = button.getAttribute('data-answer');
-            const question = document.getElementById(`question${step}`).querySelector('h3').textContent.trim();
             
-            quizData[question] = answer; 
-            
+            // Lógica de desqualificação (Mantida para redirecionar o reprovado)
             if (step === 1 && answer === "Menos de 6 meses") {
                 showFail();
                 return;
@@ -258,13 +258,19 @@
             
             if (unmaskedCpf.length === 11) {
                 // CPF SEM máscara para o CAPI/Planilha
-                quizData['CPF_CAPI'] = unmaskedCpf; 
-                // CPF COM máscara para a mensagem do WhatsApp
-                quizData['CPF'] = cpfMask.value; 
+                quizData['cpf'] = unmaskedCpf; 
+                // CPF COM máscara para a mensagem do WhatsApp 
+                quizData['cpf_formatado'] = cpfMask.value; 
 
                 sendLeadAndRedirect(); 
             } else {
-                alert('Por favor, informe um CPF válido.');
+                // Feedback visual para o CPF inválido (melhor que alert)
+                cpfInput.style.border = '2px solid #ef4444';
+                cpfInput.style.boxShadow = '0 0 10px rgba(239, 68, 68, 0.5)';
+                setTimeout(() => {
+                    cpfInput.style.border = '1px solid #d1d5db';
+                    cpfInput.style.boxShadow = 'none';
+                }, 2000);
                 cpfInput.focus();
             }
         });
@@ -272,41 +278,50 @@
 
         // FUNÇÃO FINAL DE ENVIO CAPI E REDIRECIONAMENTO
         function generateWhatsAppURL() {
-            // Mensagem Limpa com CPF
-            const cpfFormatado = quizData.CPF || 'Não Informado';
+            const cpfFormatado = quizData.cpf_formatado || 'Não Informado';
             
-            // Mensagem Final Simplificada
             const mensagemPura = `*PRÉ-APROVADO* ✅\n\nCPF para Simulação: ${cpfFormatado}\n\nOlá! Gostaria de falar com o consultor para realizar minha simulação de crédito.`;
             
             return `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(mensagemPura)}`;
         }
+
+        function redirectToWhatsApp() {
+            const whatsappUrl = generateWhatsAppURL();
+            try {
+                // Tenta redirecionar a página inteira (CRUCIAL para o Google Sites/Iframe)
+                window.parent.location.href = whatsappUrl; 
+            } catch (e) {
+                // Se o iframe bloquear, redireciona o iframe (último recurso)
+                console.error("Redirecionamento bloqueado pelo Iframe, tentando redirecionar o Iframe.");
+                window.location.href = whatsappUrl;
+            }
+        }
+
 
         function sendLeadAndRedirect() {
             // 1. DISPARA O EVENTO DE LEAD NO PIXEL (Navegador) 
             fbq('track', 'Lead'); 
             
             // 2. CAPTURA PARÂMETROS PARA O APPS SCRIPT (CAPI)
-            // ⭐️ CORREÇÃO: Tenta pegar a URL do site pai (Google Sites). Se falhar, usa a URL atual (para teste direto).
-            let params;
+            let params = {};
             try {
-                // Tenta pegar a URL do site pai (para Google Sites)
+                // Tenta pegar a URL do site pai (Google Sites)
                 const url = new URL(window.parent.location.href);
                 params = url.searchParams;
             } catch (e) {
-                // Se falhar (por restrição do iframe), usa a URL atual (para teste direto)
+                console.warn("Não foi possível acessar a URL pai. Usando a URL atual do Iframe.");
                 params = new URL(window.location.href).searchParams;
             }
-
+            
+            // Monta o objeto final de dados para o Apps Script (APENAS CPF E RASTREIO)
             const dadosLead = {
-                cpf: quizData.CPF_CAPI, 
+                cpf: quizData.cpf || '', 
                 fbclid: params.get("fbclid") || '',
                 utm_source: params.get("utm_source") || '',
                 utm_campaign: params.get("utm_campaign") || '',
                 ad_id: params.get("ad_id") || '',
-                user_agent: navigator.userAgent,
-                // O servidor salva isso
-                q1: quizData['Quantos meses você está registrado no seu emprego atual?'] || '',
-                q2: quizData['Você já realizou algum empréstimo consignado CLT?'] || ''
+                user_agent: navigator.userAgent
+                // AS RESPOSTAS DO QUIZ NÃO SÃO MAIS ENVIADAS PARA O SERVIDOR
             };
 
             // 3. ENVIA LEAD PARA O APPS SCRIPT (CAPI Server)
@@ -318,16 +333,14 @@
             .then(response => response.json())
             .then(data => {
                 console.log('Apps Script Response (CAPI Lead):', data);
+                // 4. REDIRECIONA APÓS A RESPOSTA (SUCESSO)
+                redirectToWhatsApp();
             })
-            .catch(error => console.error('Erro no envio ao Servidor CAPI:', error));
-
-            // 4. REDIRECIONA PARA O WHATSAPP
-            const whatsappUrl = generateWhatsAppURL();
-
-            setTimeout(() => {
-                // Usa window.parent.location para redirecionar toda a página principal, não apenas o iframe
-                window.parent.location.href = whatsappUrl; 
-            }, 500); 
+            .catch(error => {
+                // 4b. REDIRECIONA MESMO EM CASO DE FALHA DE CONEXÃO COM O SERVIDOR
+                console.error('Erro no envio ao Servidor CAPI, mas redirecionando o usuário para o WhatsApp:', error);
+                redirectToWhatsApp();
+            });
         }
 
         function showFail() {
