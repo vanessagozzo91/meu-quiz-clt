@@ -297,12 +297,17 @@
         function redirectToWhatsApp() {
             const whatsappUrl = generateWhatsAppURL();
             
-            // Tenta o redirecionamento mais forte para sair do Iframe e redirecionar a página principal.
+            // ⭐️ NOVO: Tenta abrir em uma nova aba (_blank) - MÁXIMA COMPATIBILIDADE NO GOOGLE SITES
+            // Este método é mais propenso a funcionar do que tentar mudar a URL da janela principal.
+            window.open(whatsappUrl, '_blank'); 
+            
+            // Tentativa de redirecionamento da janela principal (mantido como fallback)
             try {
+                // Tenta forçar a janela principal a mudar 
                 window.top.location.href = whatsappUrl; 
             } catch (e) {
                 // Se for bloqueado, usa a janela atual como fallback.
-                console.error("Redirecionamento bloqueado. Usando fallback de janela.");
+                console.error("Redirecionamento bloqueado. Usando window.open() como método principal.");
                 window.location.href = whatsappUrl;
             }
         }
@@ -320,7 +325,7 @@
             return params;
         }
 
-        // NOVO: Função para enviar o Lead via submissão de formulário (Mais robusto que fetch no Iframe)
+        // Função para enviar o Lead via submissão de formulário (Mais robusto que fetch no Iframe)
         function sendLeadFormSubmission(dadosLead) {
             // Cria um formulário dinâmico
             const form = document.createElement('form');
@@ -367,14 +372,14 @@
                 user_agent: navigator.userAgent
             };
 
-            // 3. ENVIA LEAD PARA O APPS SCRIPT (CAPI Server) usando submissão de formulário robusta
+            // 3. ENVIA LEAD PARA O APPS SCRIPT (CAPI Server)
             sendLeadFormSubmission(dadosLead);
 
             // 4. REDIRECIONA PARA O WHATSAPP
-            // Damos um pequeno atraso para garantir que a submissão da forma inicie antes de redirecionar.
+            // ⭐️ AUMENTADO O DELAY para 500ms para dar mais tempo ao envio do lead.
             setTimeout(() => {
                 redirectToWhatsApp();
-            }, 300);
+            }, 500);
         }
 
         function showFail() {
