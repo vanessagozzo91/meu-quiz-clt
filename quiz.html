@@ -210,6 +210,7 @@
     <script>
         const WHATSAPP_PHONE = '5514974000725'; 
         // ⭐️ URL DE IMPLANTAÇÃO CAPI FINALIZADA - MANTIDA
+        // (Use esta se for a que funcionava para o WhatsApp. Se não funcionar, teremos que usar a nova e garantir que tenha aspas).
         const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwa741GFr8uclrmbROGNECNLE8vGBF-oLKqOofHRAyHQqF0CqpNxvKCqDIAWq9BZjIFvA/exec'; 
         
         const totalSteps = 3; 
@@ -285,9 +286,16 @@
             fbq('track', 'Lead'); 
             
             // 2. CAPTURA PARÂMETROS PARA O APPS SCRIPT (CAPI)
-            // ⭐️ ESSA LINHA É A CHAVE: CAPTURA O URL DO SITE PAI (Google Sites)
-            const url = new URL(window.parent.location.href);
-            const params = url.searchParams;
+            // ⭐️ CORREÇÃO: Tenta pegar a URL do site pai (Google Sites). Se falhar, usa a URL atual (para teste direto).
+            let params;
+            try {
+                // Tenta pegar a URL do site pai (para Google Sites)
+                const url = new URL(window.parent.location.href);
+                params = url.searchParams;
+            } catch (e) {
+                // Se falhar (por restrição do iframe), usa a URL atual (para teste direto)
+                params = new URL(window.location.href).searchParams;
+            }
 
             const dadosLead = {
                 cpf: quizData.CPF_CAPI, 
