@@ -7,82 +7,31 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/imask"></script>
     
-    <!-- Pixel do Facebook (Meta Pixel) -->
     <script>
-        !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window, document,'script','https://connect.facebook.com/en_US/fbevents.js');fbq('init', '1406224567314703');fbq('track', 'PageView');
+        !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window, document,'script','https://connect.facebook.com/en_US/fbevents.js');fbq('init', '1406224567314703');fbq('track', 'PageView');
     </script>
     <noscript>
         <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1406224567314703&ev=PageView&noscript=1"/>
     </noscript>
 
-    <!-- CSS (Estilos) -->
     <style>
-        body { 
-            font-family: 'Inter', sans-serif; 
-            background-color: #f7f9fb;
-            margin:0; 
-            padding-top: 60px; 
-            padding-bottom: 60px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
+        body { font-family: 'Inter', sans-serif; background-color: #f7f9fb; margin:0; padding-top: 60px; padding-bottom: 60px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
         .hidden { display: none; }
-        .form-card { 
-            max-width: 500px; 
-            width: 90%;
-            margin: 0px auto; 
-            background: #fff; 
-            padding: 30px; 
-            border-radius: 12px; 
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1); 
-            text-align:center; 
-            border: 1px solid #f0f4f7; 
-        }
-        .orange-text-gradient {
-            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: 700;
-        }
+        .form-card { max-width: 500px; width: 90%; margin: 0px auto; background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); text-align:center; border: 1px solid #f0f4f7; }
+        .orange-text-gradient { background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; font-weight: 700; }
         .page-header-logo { margin-bottom: 20px; text-align: center; }
         .form-card .page-header-logo { margin-bottom: 30px; }
         .question h3 { font-size: 1.5rem; margin-bottom: 15px; font-weight: 600; color: #1f2937; }
         .step-indicator { font-size: 0.95rem; font-weight: 500; margin-bottom: 25px; color: #6b7280; }
-        .option-btn { 
-            display:block; width:100%; padding:18px; margin-bottom:15px; border-radius:12px; 
-            background: linear-gradient(90deg, #ff6b35 0%, #f7931e 100%); border: none; cursor:pointer; 
-            font-weight: 700; font-size: 1.05rem; color: #ffffff; transition: all 0.3s; 
-            box-shadow: 0 6px 15px rgba(247, 147, 30, 0.4); line-height: 1.2;
-        }
-        .option-btn:hover { 
-            background: linear-gradient(90deg, #f7931e 0%, #ff6b35 100%); color: #ffffff;
-            transform: translateY(-2px); box-shadow: 0 8px 20px rgba(247, 147, 30, 0.5);
-        }
-        #cpf-input {
-            width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #d1d5db;
-            background-color: #f9fafb; color: #1f2937; font-size: 1.1rem; margin-top: 15px;
-            box-sizing: border-box; text-align: center; transition: border 0.3s, box-shadow 0.3s; 
-        }
+        .option-btn { display:block; width:100%; padding:18px; margin-bottom:15px; border-radius:12px; background: linear-gradient(90deg, #ff6b35 0%, #f7931e 100%); border: none; cursor:pointer; font-weight: 700; font-size: 1.05rem; color: #ffffff; transition: all 0.3s; box-shadow: 0 6px 15px rgba(247, 147, 30, 0.4); line-height: 1.2; }
+        .option-btn:hover { background: linear-gradient(90deg, #f7931e 0%, #ff6b35 100%); color: #ffffff; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(247, 147, 30, 0.5); }
+        #cpf-input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #d1d5db; background-color: #f9fafb; color: #1f2937; font-size: 1.1rem; margin-top: 15px; box-sizing: border-box; text-align: center; transition: border 0.3s, box-shadow 0.3s; }
         #cpf-error-message { color: #ef4444; font-size: 0.85rem; margin-top: 5px; font-weight: 500; }
         .title-message { font-size: 1.8rem; font-weight: 700; color: #ef4444; margin: 30px 0 15px; } 
         .result-text { color: #4b5563; } 
-        .cta-btn { 
-            display: inline-flex; align-items: center; margin-top: 25px; padding: 15px 35px; 
-            background: linear-gradient(90deg, #ff6b35 0%, #f7931e 100%); color: white; 
-            border-radius: 12px; font-size: 1.15rem; font-weight: 700; text-decoration: none;
-            transition: all 0.3s; box-shadow: 0 8px 20px rgba(247, 147, 30, 0.4); cursor: pointer; border: none;
-        }
-        .cta-btn:hover { 
-            background: linear-gradient(90deg, #f7931e 0%, #ff6b35 100%);
-            box-shadow: 0 10px 25px rgba(247, 147, 30, 0.5);
-        }
-        .quiz-title {
-            font-size: 1.5rem; margin-bottom: 1.25rem; padding-bottom: 0.75rem;
-            border-bottom: 1px solid #e5e7eb; color: #000;
-        }
+        .cta-btn { display: inline-flex; align-items: center; margin-top: 25px; padding: 15px 35px; background: linear-gradient(90deg, #ff6b35 0%, #f7931e 100%); color: white; border-radius: 12px; font-size: 1.15rem; font-weight: 700; text-decoration: none; transition: all 0.3s; box-shadow: 0 8px 20px rgba(247, 147, 30, 0.4); cursor: pointer; border: none; }
+        .cta-btn:hover { background: linear-gradient(90deg, #f7931e 0%, #ff6b35 100%); box-shadow: 0 10px 25px rgba(247, 147, 30, 0.5); }
+        .quiz-title { font-size: 1.5rem; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid #e5e7eb; color: #000; }
         .logo-text-bold { font-weight: 700; letter-spacing: 0.05em; }
         .logo-text-size { font-size: 1.5rem; }
         .text-center { text-align: center; }
@@ -141,7 +90,6 @@
                     REALIZAR SIMULAÇÃO
                 </button>
             </div>
-
         </div>
 
         <div id="resultFail" class="hidden">
@@ -150,32 +98,22 @@
         </div>
     </div>
     
-    <!-- Iframe Oculto para Submissão Assíncrona do Formulário CAPI -->
     <iframe name="iframeLeadTarget" id="iframeLeadTarget" style="display:none;"></iframe>
 
-
     <script>
-        // ⭐️⭐️ CONFIGURAÇÃO CRÍTICA CONFIRMADA ⭐️⭐️
-        // O número de WhatsApp e a URL do Apps Script estão definidos abaixo.
-        const WHATSAPP_PHONE = '5514974000725'; // CONFIRMADO: Número de telefone
-        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwl1aWk0XavXE2L7qwrk_3XNlJku6pK76ezVSJ8moyMCeo_PKQ96HFLh2NzGSikThxB/exec'; // CONFIRMADO: URL do Apps Script
+        // ⭐️⭐️ POR FAVOR, CONFIRA ESTES DOIS VALORES! ⭐️⭐️
+        const WHATSAPP_PHONE = '5514974000725'; 
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwl1aWk0XavXE2L7qwrk_3XNlJku6pK76ezVSJ8moyMCeo_PKQ96HFLh2NzGSikThxB/exec'; 
         // ⭐️⭐️ ----------------------------------------- ⭐️⭐️
         
         const totalSteps = 3; 
         let currentStep = 1;
-        
-        // Objeto inicializado para armazenar dados do quiz e RASTREAMENTO (lidos da Query String)
+        // Objeto inicializado com rastreamento vazio, que será preenchido
         let quizData = {
-            // Parâmetros de Rastreamento
             fbclid: '',
             utm_source: '',
-            utm_medium: '', 
             utm_campaign: '',
-            ad_id: '',
-            utm_content: '', 
-            // Dados do Lead
-            cpf: '',
-            cpf_formatado: ''
+            ad_id: ''
         };
         
         const cpfInput = document.getElementById('cpf-input');
@@ -191,68 +129,52 @@
             stepElement.innerHTML = `Passo <span class="orange-text-gradient">${displayStep}</span> de ${totalSteps}`;
         }
         
-        /**
-         * @description Lê os parâmetros de rastreamento da Query String (parte após o '?') do URL.
-         * Esta é a abordagem mais confiável para iframes.
-         */
-        function readTrackingParamsFromQuery() {
-            // Pega a query string (ex: ?fbclid=X&utm=Y) e remove o '?' inicial
-            const query = window.location.search.substring(1); 
+        // CORRIGIDO: Função para ler os parâmetros do fragmento de hash (#)
+        function readTrackingParamsFromHash() {
+            console.log("Iniciando leitura de parâmetros da URL...");
+            // Pega a string DEPOIS do #
+            const hash = window.location.hash.substring(1);
+            console.log("Hash encontrado na URL:", hash);
             
-            if (query) {
-                try {
-                    // Cria um objeto URLSearchParams a partir da string da query
-                    const urlParams = new URLSearchParams(query); 
-                    
-                    // Salvando os campos de rastreamento
-                    quizData.fbclid = urlParams.get("fbclid") || '';
-                    quizData.utm_source = urlParams.get("utm_source") || '';
-                    quizData.utm_medium = urlParams.get("utm_medium") || ''; 
-                    quizData.utm_campaign = urlParams.get("utm_campaign") || '';
-                    quizData.ad_id = urlParams.get("ad_id") || '';
-                    quizData.utm_content = urlParams.get("utm_content") || ''; 
-                    
-                    console.log("SUCESSO: Parâmetros lidos via QUERY STRING:", quizData);
-                } catch (error) {
-                    console.error("FALHA: Erro ao parsear query string:", error);
-                }
+            if (hash) {
+                // URLSearchParams é a forma correta de processar uma string de parâmetros
+                const urlParams = new URLSearchParams(hash);
+                
+                // .get() vai buscar o valor de cada parâmetro
+                quizData.fbclid = urlParams.get("fbclid") || '';
+                quizData.utm_source = urlParams.get("utm_source") || '';
+                quizData.utm_campaign = urlParams.get("utm_campaign") || '';
+                quizData.ad_id = urlParams.get("ad_id") || '';
+                
+                console.log("SUCESSO: Parâmetros lidos e salvos no objeto quizData:", quizData);
             } else {
-                console.log("Nenhum parâmetro de rastreamento encontrado na Query String.");
+                console.log("AVISO: Nenhum parâmetro de rastreamento (#) encontrado na URL.");
             }
         }
 
+        // Evento que roda assim que o conteúdo da página é carregado
         document.addEventListener('DOMContentLoaded', () => {
-            // Executa a leitura da Query String logo no carregamento
-            readTrackingParamsFromQuery(); 
+            // Executa a leitura do Hash logo no carregamento
+            readTrackingParamsFromHash(); 
             updateStepIndicator();
         });
 
         function nextQuestion(step, button) {
             const answer = button.getAttribute('data-answer');
             
-            // Lógica de Reprovação/Aprovação
-            if (step === 1) {
-                // Se estiver empregado há menos de 6 meses (Menos de 6 meses)
-                if (answer === "Menos de 6 meses") {
-                    showFail();
-                    return;
-                }
+            if (step === 1 && answer === "Menos de 6 meses") {
+                showFail();
+                return;
             }
-            
-            if (step === 2) {
-                // Se já realizou empréstimo consignado CLT (Já realizei)
-                if (answer === "Já realizei") {
-                    showFail();
-                    return;
-                }
+            if (step === 2 && answer === "Já realizei") {
+                showFail();
+                return;
             }
 
-            // Esconde a pergunta atual
             document.getElementById(`question${step}`).classList.add('hidden');
             currentStep++;
             updateStepIndicator();
             
-            // Mostra a próxima pergunta ou a final (CPF)
             if (currentStep <= totalSteps) {
                 document.getElementById(`question${currentStep}`).classList.remove('hidden');
             }
@@ -277,8 +199,8 @@
             if (unmaskedCpf.length === 11) {
                 showCpfError(false);
                 
-                quizData.cpf = unmaskedCpf; 
-                quizData.cpf_formatado = cpfMask.value; 
+                quizData['cpf'] = unmaskedCpf; 
+                quizData['cpf_formatado'] = cpfMask.value; 
 
                 sendLeadAndRedirect(); 
             } else {
@@ -286,12 +208,10 @@
             }
         });
 
-
         // FUNÇÃO FINAL DE ENVIO CAPI E REDIRECIONAMENTO
         
         function generateWhatsAppURL() {
             const cpfFormatado = quizData.cpf_formatado || 'Não Informado';
-            // Mensagem clara com o status e o CPF formatado
             const mensagemPura = `*PRÉ-APROVADO* ✅\n\nCPF para Simulação: ${cpfFormatado}\n\nOlá! Gostaria de falar com o consultor para realizar minha simulação de crédito.`;
             
             return `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(mensagemPura)}`;
@@ -300,19 +220,10 @@
         function redirectToWhatsApp() {
             const whatsappUrl = generateWhatsAppURL();
             
-            // Tenta abrir em nova aba
+            // Tenta abrir em uma nova aba, que é a melhor experiência
             const newWindow = window.open(whatsappUrl, '_blank'); 
             
-            // Tenta forçar o redirecionamento da janela principal (útil em alguns iframes/ambientes)
-            try {
-                if (window.top !== window.self) {
-                    window.top.location.href = whatsappUrl; 
-                }
-            } catch (e) {
-                console.error("Redirecionamento do iframe principal bloqueado. Nova aba aberta.");
-            }
-
-            // Fallback: Se a nova aba não abrir (bloqueio de pop-up), redireciona a janela atual
+            // Fallback caso o pop-up seja bloqueado
             if (!newWindow || newWindow.closed || typeof newWindow.closed == 'undefined') {
                 window.location.href = whatsappUrl;
             }
@@ -322,7 +233,7 @@
             const form = document.createElement('form');
             form.method = 'POST';
             form.action = APPS_SCRIPT_URL;
-            form.target = 'iframeLeadTarget'; // Envia para o iframe oculto
+            form.target = 'iframeLeadTarget'; 
             form.style.display = 'none';
 
             for (const key in dadosLead) {
@@ -337,37 +248,32 @@
 
             document.body.appendChild(form);
             form.submit();
-            console.log('Lead enviado via submissão de formulário para Apps Script.');
+            console.log('Dados do Lead enviados para a planilha via formulário:', dadosLead);
             
-            setTimeout(() => form.remove(), 1000); // Remove o formulário após o envio
+            setTimeout(() => form.remove(), 1000);
         }
 
         function sendLeadAndRedirect() {
-            // 1. DISPARA O EVENTO DE LEAD NO PIXEL DO FACEBOOK
+            // 1. DISPARA O EVENTO DE LEAD NO PIXEL (Navegador) 
             fbq('track', 'Lead'); 
             
             // Monta o objeto final de dados
             const dadosLead = {
-                // Dados do formulário
                 cpf: quizData.cpf || '', 
-                
-                // Dados de rastreamento
                 fbclid: quizData.fbclid || '',
                 utm_source: quizData.utm_source || '',
-                utm_medium: quizData.utm_medium || '',
                 utm_campaign: quizData.utm_campaign || '',
                 ad_id: quizData.ad_id || '',
-                utm_content: quizData.utm_content || '',
-
                 user_agent: navigator.userAgent
             };
             
-            console.log("Dados de Lead a serem enviados:", dadosLead);
+            // PONTO DE VERIFICAÇÃO CRÍTICO
+            console.log("Objeto 'dadosLead' que será enviado para a planilha:", dadosLead);
 
             // 2. ENVIA LEAD PARA O APPS SCRIPT
             sendLeadFormSubmission(dadosLead);
 
-            // 3. REDIRECIONA PARA O WHATSAPP
+            // 3. REDIRECIONA PARA O WHATSAPP (com um pequeno delay para garantir o envio)
             setTimeout(() => {
                 redirectToWhatsApp();
             }, 500);
@@ -377,7 +283,7 @@
             document.getElementById('quizQuestions').classList.add('hidden');
             document.getElementById('step-info').classList.add('hidden');
             document.getElementById('resultFail').classList.remove('hidden');
-            fbq('trackCustom', 'QuizReprovado'); // Dispara evento de Reprovação no Pixel
+            fbq('trackCustom', 'QuizReprovado'); 
         }
     </script>
 </body>
