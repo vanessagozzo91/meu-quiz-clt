@@ -155,21 +155,27 @@
 
 
     <script>
-        // ⭐️⭐️ POR FAVOR, CONFIRA ESTES DOIS VALORES! ⭐️⭐️
-        const WHATSAPP_PHONE = '5514974000725'; 
-        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwl1aWk0XavXE2L7qwrk_3XNlJku6pK76ezVSJ8moyMCeo_PKQ96HFLh2NzGSikThxB/exec'; 
+        // ⭐️⭐️ CONFIGURAÇÃO CRÍTICA CONFIRMADA ⭐️⭐️
+        // O número de WhatsApp e a URL do Apps Script estão definidos abaixo.
+        const WHATSAPP_PHONE = '5514974000725'; // CONFIRMADO: Número de telefone
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwl1aWk0XavXE2L7qwrk_3XNlJku6pK76ezVSJ8moyMCeo_PKQ96HFLh2NzGSikThxB/exec'; // CONFIRMADO: URL do Apps Script
         // ⭐️⭐️ ----------------------------------------- ⭐️⭐️
         
         const totalSteps = 3; 
         let currentStep = 1;
-        // Objeto inicializado com rastreamento vazio. Adicionadas colunas padrão.
+        
+        // Objeto inicializado para armazenar dados do quiz e RASTREAMENTO (lidos da Query String)
         let quizData = {
+            // Parâmetros de Rastreamento
             fbclid: '',
             utm_source: '',
-            utm_medium: '', // Adicionado para rastreamento completo
+            utm_medium: '', 
             utm_campaign: '',
             ad_id: '',
-            utm_content: '' // Adicionado para rastreamento completo
+            utm_content: '', 
+            // Dados do Lead
+            cpf: '',
+            cpf_formatado: ''
         };
         
         const cpfInput = document.getElementById('cpf-input');
@@ -185,38 +191,39 @@
             stepElement.innerHTML = `Passo <span class="orange-text-gradient">${displayStep}</span> de ${totalSteps}`;
         }
         
-        // NOVO E MAIS ROBUSTO: Função para ler os parâmetros do fragmento de hash (#)
-        function readTrackingParamsFromHash() {
-            // Pega o hash (ex: #fbclid=X&utm=Y)
-            const hash = window.location.hash; 
+        /**
+         * @description Lê os parâmetros de rastreamento da Query String (parte após o '?') do URL.
+         * Esta é a abordagem mais confiável para iframes.
+         */
+        function readTrackingParamsFromQuery() {
+            // Pega a query string (ex: ?fbclid=X&utm=Y) e remove o '?' inicial
+            const query = window.location.search.substring(1); 
             
-            if (hash && hash.length > 1) {
+            if (query) {
                 try {
-                    // CRUCIAL: Substitui o '#' por '?' e usa um URL dummy para parsing mais robusto
-                    // Isso garante que o URLSearchParams trate o hash como uma query string válida.
-                    const queryLikeString = hash.replace('#', '?');
-                    const dummyUrl = new URL('http://dummy.com' + queryLikeString);
-                    const urlParams = dummyUrl.searchParams; 
+                    // Cria um objeto URLSearchParams a partir da string da query
+                    const urlParams = new URLSearchParams(query); 
                     
+                    // Salvando os campos de rastreamento
                     quizData.fbclid = urlParams.get("fbclid") || '';
                     quizData.utm_source = urlParams.get("utm_source") || '';
-                    quizData.utm_medium = urlParams.get("utm_medium") || ''; // Novo
+                    quizData.utm_medium = urlParams.get("utm_medium") || ''; 
                     quizData.utm_campaign = urlParams.get("utm_campaign") || '';
                     quizData.ad_id = urlParams.get("ad_id") || '';
-                    quizData.utm_content = urlParams.get("utm_content") || ''; // Novo
+                    quizData.utm_content = urlParams.get("utm_content") || ''; 
                     
-                    console.log("SUCESSO: Parâmetros lidos via Hash (Robusto):", quizData);
+                    console.log("SUCESSO: Parâmetros lidos via QUERY STRING:", quizData);
                 } catch (error) {
-                    console.error("FALHA: Erro ao parsear hash (tentativa robusta):", error);
+                    console.error("FALHA: Erro ao parsear query string:", error);
                 }
             } else {
-                console.log("Nenhum parâmetro de rastreamento encontrado no Hash.");
+                console.log("Nenhum parâmetro de rastreamento encontrado na Query String.");
             }
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            // Executa a leitura do Hash logo no carregamento
-            readTrackingParamsFromHash(); 
+            // Executa a leitura da Query String logo no carregamento
+            readTrackingParamsFromQuery(); 
             updateStepIndicator();
         });
 
@@ -225,19 +232,19 @@
             
             // Lógica de Reprovação/Aprovação
             if (step === 1) {
+                // Se estiver empregado há menos de 6 meses (Menos de 6 meses)
                 if (answer === "Menos de 6 meses") {
                     showFail();
                     return;
                 }
-                // Se for 6 meses ou mais, avança
             }
             
             if (step === 2) {
+                // Se já realizou empréstimo consignado CLT (Já realizei)
                 if (answer === "Já realizei") {
                     showFail();
                     return;
                 }
-                // Se for "Ainda não", avança
             }
 
             // Esconde a pergunta atual
@@ -245,7 +252,7 @@
             currentStep++;
             updateStepIndicator();
             
-            // Mostra a próxima pergunta ou a final
+            // Mostra a próxima pergunta ou a final (CPF)
             if (currentStep <= totalSteps) {
                 document.getElementById(`question${currentStep}`).classList.remove('hidden');
             }
@@ -270,8 +277,8 @@
             if (unmaskedCpf.length === 11) {
                 showCpfError(false);
                 
-                quizData['cpf'] = unmaskedCpf; 
-                quizData['cpf_formatado'] = cpfMask.value; 
+                quizData.cpf = unmaskedCpf; 
+                quizData.cpf_formatado = cpfMask.value; 
 
                 sendLeadAndRedirect(); 
             } else {
@@ -284,6 +291,7 @@
         
         function generateWhatsAppURL() {
             const cpfFormatado = quizData.cpf_formatado || 'Não Informado';
+            // Mensagem clara com o status e o CPF formatado
             const mensagemPura = `*PRÉ-APROVADO* ✅\n\nCPF para Simulação: ${cpfFormatado}\n\nOlá! Gostaria de falar com o consultor para realizar minha simulação de crédito.`;
             
             return `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(mensagemPura)}`;
@@ -292,18 +300,19 @@
         function redirectToWhatsApp() {
             const whatsappUrl = generateWhatsAppURL();
             
+            // Tenta abrir em nova aba
             const newWindow = window.open(whatsappUrl, '_blank'); 
             
-            // Tenta forçar o redirecionamento da janela principal (Google Sites)
+            // Tenta forçar o redirecionamento da janela principal (útil em alguns iframes/ambientes)
             try {
                 if (window.top !== window.self) {
-                    // Este código tenta quebrar o iframe e redirecionar a página inteira
                     window.top.location.href = whatsappUrl; 
                 }
             } catch (e) {
-                console.error("Redirecionamento do iframe principal bloqueado (esperado no Sites). Nova aba aberta.");
+                console.error("Redirecionamento do iframe principal bloqueado. Nova aba aberta.");
             }
 
+            // Fallback: Se a nova aba não abrir (bloqueio de pop-up), redireciona a janela atual
             if (!newWindow || newWindow.closed || typeof newWindow.closed == 'undefined') {
                 window.location.href = whatsappUrl;
             }
@@ -313,7 +322,7 @@
             const form = document.createElement('form');
             form.method = 'POST';
             form.action = APPS_SCRIPT_URL;
-            form.target = 'iframeLeadTarget'; 
+            form.target = 'iframeLeadTarget'; // Envia para o iframe oculto
             form.style.display = 'none';
 
             for (const key in dadosLead) {
@@ -328,37 +337,37 @@
 
             document.body.appendChild(form);
             form.submit();
-            console.log('Lead enviado via submissão de formulário (CAPI).');
+            console.log('Lead enviado via submissão de formulário para Apps Script.');
             
-            setTimeout(() => form.remove(), 1000);
+            setTimeout(() => form.remove(), 1000); // Remove o formulário após o envio
         }
 
         function sendLeadAndRedirect() {
-            // 1. DISPARA O EVENTO DE LEAD NO PIXEL (Navegador) 
+            // 1. DISPARA O EVENTO DE LEAD NO PIXEL DO FACEBOOK
             fbq('track', 'Lead'); 
             
-            // Monta o objeto final de dados, incluindo os dados de rastreamento lidos do hash
+            // Monta o objeto final de dados
             const dadosLead = {
-                // Dados obrigatórios do formulário
+                // Dados do formulário
                 cpf: quizData.cpf || '', 
                 
-                // Dados de rastreamento (lidos agora de forma mais robusta)
+                // Dados de rastreamento
                 fbclid: quizData.fbclid || '',
                 utm_source: quizData.utm_source || '',
-                utm_medium: quizData.utm_medium || '', // Adicionado
+                utm_medium: quizData.utm_medium || '',
                 utm_campaign: quizData.utm_campaign || '',
                 ad_id: quizData.ad_id || '',
-                utm_content: quizData.utm_content || '', // Adicionado
+                utm_content: quizData.utm_content || '',
 
                 user_agent: navigator.userAgent
             };
             
             console.log("Dados de Lead a serem enviados:", dadosLead);
 
-            // 3. ENVIA LEAD PARA O APPS SCRIPT (CAPI Server)
+            // 2. ENVIA LEAD PARA O APPS SCRIPT
             sendLeadFormSubmission(dadosLead);
 
-            // 4. REDIRECIONA PARA O WHATSAPP
+            // 3. REDIRECIONA PARA O WHATSAPP
             setTimeout(() => {
                 redirectToWhatsApp();
             }, 500);
@@ -368,7 +377,7 @@
             document.getElementById('quizQuestions').classList.add('hidden');
             document.getElementById('step-info').classList.add('hidden');
             document.getElementById('resultFail').classList.remove('hidden');
-            fbq('trackCustom', 'QuizReprovado'); 
+            fbq('trackCustom', 'QuizReprovado'); // Dispara evento de Reprovação no Pixel
         }
     </script>
 </body>
