@@ -9,7 +9,7 @@
     
     <!-- Pixel do Facebook (Meta Pixel) -->
     <script>
-        !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window, document,'script','https://connect.facebook.com/en_US/fbevents.js');fbq('init', '1406224567314703');fbq('track', 'PageView');
+        !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window, document,'script','https://connect.facebook.com/en_US/fbevents.js');fbq('init', '1406224567314703');fbq('track', 'PageView');
     </script>
     <noscript>
         <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1406224567314703&ev=PageView&noscript=1"/>
@@ -162,12 +162,14 @@
         
         const totalSteps = 3; 
         let currentStep = 1;
-        // Objeto inicializado com rastreamento vazio, que será preenchido pelo leitor de Hash
+        // Objeto inicializado com rastreamento vazio. Adicionadas colunas padrão.
         let quizData = {
             fbclid: '',
             utm_source: '',
+            utm_medium: '', // Adicionado para rastreamento completo
             utm_campaign: '',
-            ad_id: ''
+            ad_id: '',
+            utm_content: '' // Adicionado para rastreamento completo
         };
         
         const cpfInput = document.getElementById('cpf-input');
@@ -183,20 +185,30 @@
             stepElement.innerHTML = `Passo <span class="orange-text-gradient">${displayStep}</span> de ${totalSteps}`;
         }
         
-        // NOVO: Função para ler os parâmetros do fragmento de hash (#)
+        // NOVO E MAIS ROBUSTO: Função para ler os parâmetros do fragmento de hash (#)
         function readTrackingParamsFromHash() {
-            const hash = window.location.hash.substring(1); // Remove o '#'
+            // Pega o hash (ex: #fbclid=X&utm=Y)
+            const hash = window.location.hash; 
             
-            if (hash) {
-                // O hash é lido como uma string de query, ex: fbclid=X&utm=Y
-                const urlParams = new URLSearchParams(hash);
-                
-                quizData.fbclid = urlParams.get("fbclid") || '';
-                quizData.utm_source = urlParams.get("utm_source") || '';
-                quizData.utm_campaign = urlParams.get("utm_campaign") || '';
-                quizData.ad_id = urlParams.get("ad_id") || '';
-                
-                console.log("SUCESSO: Parâmetros lidos via Hash:", quizData);
+            if (hash && hash.length > 1) {
+                try {
+                    // CRUCIAL: Substitui o '#' por '?' e usa um URL dummy para parsing mais robusto
+                    // Isso garante que o URLSearchParams trate o hash como uma query string válida.
+                    const queryLikeString = hash.replace('#', '?');
+                    const dummyUrl = new URL('http://dummy.com' + queryLikeString);
+                    const urlParams = dummyUrl.searchParams; 
+                    
+                    quizData.fbclid = urlParams.get("fbclid") || '';
+                    quizData.utm_source = urlParams.get("utm_source") || '';
+                    quizData.utm_medium = urlParams.get("utm_medium") || ''; // Novo
+                    quizData.utm_campaign = urlParams.get("utm_campaign") || '';
+                    quizData.ad_id = urlParams.get("ad_id") || '';
+                    quizData.utm_content = urlParams.get("utm_content") || ''; // Novo
+                    
+                    console.log("SUCESSO: Parâmetros lidos via Hash (Robusto):", quizData);
+                } catch (error) {
+                    console.error("FALHA: Erro ao parsear hash (tentativa robusta):", error);
+                }
             } else {
                 console.log("Nenhum parâmetro de rastreamento encontrado no Hash.");
             }
@@ -211,19 +223,29 @@
         function nextQuestion(step, button) {
             const answer = button.getAttribute('data-answer');
             
-            if (step === 1 && answer === "Menos de 6 meses") {
-                showFail();
-                return;
+            // Lógica de Reprovação/Aprovação
+            if (step === 1) {
+                if (answer === "Menos de 6 meses") {
+                    showFail();
+                    return;
+                }
+                // Se for 6 meses ou mais, avança
             }
-            if (step === 2 && answer === "Já realizei") {
-                showFail();
-                return;
+            
+            if (step === 2) {
+                if (answer === "Já realizei") {
+                    showFail();
+                    return;
+                }
+                // Se for "Ainda não", avança
             }
 
+            // Esconde a pergunta atual
             document.getElementById(`question${step}`).classList.add('hidden');
             currentStep++;
             updateStepIndicator();
             
+            // Mostra a próxima pergunta ou a final
             if (currentStep <= totalSteps) {
                 document.getElementById(`question${currentStep}`).classList.remove('hidden');
             }
@@ -275,6 +297,7 @@
             // Tenta forçar o redirecionamento da janela principal (Google Sites)
             try {
                 if (window.top !== window.self) {
+                    // Este código tenta quebrar o iframe e redirecionar a página inteira
                     window.top.location.href = whatsappUrl; 
                 }
             } catch (e) {
@@ -316,13 +339,21 @@
             
             // Monta o objeto final de dados, incluindo os dados de rastreamento lidos do hash
             const dadosLead = {
+                // Dados obrigatórios do formulário
                 cpf: quizData.cpf || '', 
+                
+                // Dados de rastreamento (lidos agora de forma mais robusta)
                 fbclid: quizData.fbclid || '',
                 utm_source: quizData.utm_source || '',
+                utm_medium: quizData.utm_medium || '', // Adicionado
                 utm_campaign: quizData.utm_campaign || '',
                 ad_id: quizData.ad_id || '',
+                utm_content: quizData.utm_content || '', // Adicionado
+
                 user_agent: navigator.userAgent
             };
+            
+            console.log("Dados de Lead a serem enviados:", dadosLead);
 
             // 3. ENVIA LEAD PARA O APPS SCRIPT (CAPI Server)
             sendLeadFormSubmission(dadosLead);
