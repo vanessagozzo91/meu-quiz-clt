@@ -17,7 +17,6 @@
 
     <!-- CSS (Estilos) -->
     <style>
-        /* Fundo da página em Cinza Claro */
         body { 
             font-family: 'Inter', sans-serif; 
             background-color: #f7f9fb;
@@ -41,7 +40,6 @@
             text-align:center; 
             border: 1px solid #f0f4f7; 
         }
-        /* Aplica o gradiente laranja ao texto */
         .orange-text-gradient {
             background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
             -webkit-background-clip: text;
@@ -49,142 +47,53 @@
             -webkit-text-fill-color: transparent;
             font-weight: 700;
         }
-        
-        /* Estilo para o Logo no topo (ajustado para ser fixo se for embedded, ou dentro do card) */
-        .page-header-logo {
-            /* Removidas propriedades position: absolute para melhor compatibilidade em iframes */
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        /* Garantindo o Logo dentro do Card para evitar problemas de iframe */
-        .form-card .page-header-logo {
-            margin-bottom: 30px;
-        }
-
-        /* PERGUNTA */
-        .question h3 { 
-            font-size: 1.5rem; 
-            margin-bottom: 15px; 
-            font-weight: 600; 
-            color: #1f2937; 
-        }
-
-        /* Indicador de Passo */
-        .step-indicator {
-            font-size: 0.95rem;
-            font-weight: 500;
-            margin-bottom: 25px;
-            color: #6b7280; 
-        }
-        
-        /* ESTILO DO BOTÃO DE OPÇÃO EM GRADIENTE LARANJA */
+        .page-header-logo { margin-bottom: 20px; text-align: center; }
+        .form-card .page-header-logo { margin-bottom: 30px; }
+        .question h3 { font-size: 1.5rem; margin-bottom: 15px; font-weight: 600; color: #1f2937; }
+        .step-indicator { font-size: 0.95rem; font-weight: 500; margin-bottom: 25px; color: #6b7280; }
         .option-btn { 
-            display:block; 
-            width:100%; 
-            padding:18px; 
-            margin-bottom:15px; 
-            border-radius:12px; 
-            background: linear-gradient(90deg, #ff6b35 0%, #f7931e 100%);
-            border: none;
-            cursor:pointer; 
-            font-weight: 700; 
-            font-size: 1.05rem;
-            color: #ffffff;
-            transition: all 0.3s; 
-            box-shadow: 0 6px 15px rgba(247, 147, 30, 0.4); 
-            line-height: 1.2;
+            display:block; width:100%; padding:18px; margin-bottom:15px; border-radius:12px; 
+            background: linear-gradient(90deg, #ff6b35 0%, #f7931e 100%); border: none; cursor:pointer; 
+            font-weight: 700; font-size: 1.05rem; color: #ffffff; transition: all 0.3s; 
+            box-shadow: 0 6px 15px rgba(247, 147, 30, 0.4); line-height: 1.2;
         }
         .option-btn:hover { 
-            background: linear-gradient(90deg, #f7931e 0%, #ff6b35 100%);
-            color: #ffffff;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(247, 147, 30, 0.5);
+            background: linear-gradient(90deg, #f7931e 0%, #ff6b35 100%); color: #ffffff;
+            transform: translateY(-2px); box-shadow: 0 8px 20px rgba(247, 147, 30, 0.5);
         }
-
-        /* Campo de CPF */
         #cpf-input {
-            width: 100%;
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid #d1d5db;
-            background-color: #f9fafb;
-            color: #1f2937;
-            font-size: 1.1rem;
-            margin-top: 15px;
-            box-sizing: border-box;
-            text-align: center;
-            transition: border 0.3s, box-shadow 0.3s; 
+            width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #d1d5db;
+            background-color: #f9fafb; color: #1f2937; font-size: 1.1rem; margin-top: 15px;
+            box-sizing: border-box; text-align: center; transition: border 0.3s, box-shadow 0.3s; 
         }
-        #cpf-error-message {
-            color: #ef4444;
-            font-size: 0.85rem;
-            margin-top: 5px;
-            font-weight: 500;
-        }
-
-        /* Mensagens finais */
+        #cpf-error-message { color: #ef4444; font-size: 0.85rem; margin-top: 5px; font-weight: 500; }
         .title-message { font-size: 1.8rem; font-weight: 700; color: #ef4444; margin: 30px 0 15px; } 
         .result-text { color: #4b5563; } 
-
-
-        /* Estilo do botão CTA (Laranja) */
         .cta-btn { 
-            display: inline-flex;
-            align-items: center;
-            margin-top: 25px;
-            padding: 15px 35px; 
-            background: linear-gradient(90deg, #ff6b35 0%, #f7931e 100%);
-            color: white; 
-            border-radius: 12px; 
-            font-size: 1.15rem; 
-            font-weight: 700; 
-            text-decoration: none;
-            transition: all 0.3s;
-            box-shadow: 0 8px 20px rgba(247, 147, 30, 0.4);
-            cursor: pointer;
-            border: none;
+            display: inline-flex; align-items: center; margin-top: 25px; padding: 15px 35px; 
+            background: linear-gradient(90deg, #ff6b35 0%, #f7931e 100%); color: white; 
+            border-radius: 12px; font-size: 1.15rem; font-weight: 700; text-decoration: none;
+            transition: all 0.3s; box-shadow: 0 8px 20px rgba(247, 147, 30, 0.4); cursor: pointer; border: none;
         }
         .cta-btn:hover { 
             background: linear-gradient(90deg, #f7931e 0%, #ff6b35 100%);
             box-shadow: 0 10px 25px rgba(247, 147, 30, 0.5);
         }
-
-        /* Estilos do H1 */
         .quiz-title {
-            font-size: 1.5rem;
-            margin-bottom: 1.25rem;
-            padding-bottom: 0.75rem;
-            border-bottom: 1px solid #e5e7eb;
-            color: #000;
+            font-size: 1.5rem; margin-bottom: 1.25rem; padding-bottom: 0.75rem;
+            border-bottom: 1px solid #e5e7eb; color: #000;
         }
-
-        /* Estilos do Header/Logo */
         .logo-text-bold { font-weight: 700; letter-spacing: 0.05em; }
         .logo-text-size { font-size: 1.5rem; }
         .text-center { text-align: center; }
         .leading-tight { line-height: 1.25; } 
-
-        /* Estilos de P */
         .text-sm { font-size: 0.875rem; }
         .mt-3 { margin-top: 0.75rem; }
         .text-gray-500 { color: #6b7280; }
-
-        /* Media Queries para Responsividade */
         @media (max-width: 600px) {
-            .form-card {
-                padding: 20px;
-                border-radius: 0; /* Remove bordas arredondadas em telas muito pequenas */
-                width: 100%;
-                min-height: 100vh;
-                margin: 0;
-                box-shadow: none;
-            }
-            body {
-                padding: 0;
-            }
-            .question h3 {
-                font-size: 1.35rem;
-            }
+            .form-card { padding: 20px; border-radius: 0; width: 100%; min-height: 100vh; margin: 0; box-shadow: none; }
+            body { padding: 0; }
+            .question h3 { font-size: 1.35rem; }
         }
     </style>
 </head>
@@ -192,7 +101,6 @@
     
     <div class="form-card" id="formContainer">
         
-        <!-- Logo movido para dentro do form-card para melhor compatibilidade em iframe -->
         <div class="page-header-logo">
             <div class="text-center leading-tight">
                 <span class="logo-text-size logo-text-bold text-black">ESPECIAL</span>
@@ -254,8 +162,13 @@
         
         const totalSteps = 3; 
         let currentStep = 1;
-        // Objeto para armazenar CPF e TODOS os dados de rastreio.
-        let quizData = {};
+        // Objeto inicializado com rastreamento vazio, que será preenchido pelo PostMessage
+        let quizData = {
+            fbclid: '',
+            utm_source: '',
+            utm_campaign: '',
+            ad_id: ''
+        };
         
         const cpfInput = document.getElementById('cpf-input');
         const cpfBtn = document.getElementById('cpf-btn');
@@ -266,37 +179,28 @@
 
         function updateStepIndicator() {
             const stepElement = document.getElementById('step-info');
-            // Garantindo que o Step 3 não mostre "Passo 4 de 3"
             const displayStep = Math.min(currentStep, totalSteps);
             stepElement.innerHTML = `Passo <span class="orange-text-gradient">${displayStep}</span> de ${totalSteps}`;
         }
         
-        // 🚨 NOVO: Função para obter os parâmetros de rastreamento (lê a URL do iframe)
-        function getTrackingParams() {
-            const params = new URL(window.location.href).searchParams;
-            const tracking = {
-                fbclid: params.get("fbclid") || '',
-                utm_source: params.get("utm_source") || '',
-                utm_campaign: params.get("utm_campaign") || '',
-                ad_id: params.get("ad_id") || ''
-            };
-            return tracking;
-        }
+        // NOVO: Listener para receber os dados do Google Sites (Página Pai)
+        window.addEventListener('message', (event) => {
+            // Verifica se a mensagem veio com o tipo correto E se a origem é confiável
+            // (Usamos '*' na origem do lado do Google Sites, o que funciona, mas é bom filtrar o tipo)
+            if (event.data && event.data.type === 'TRACKING_PARAMS' && event.data.data) {
+                // Atualiza o objeto quizData com os parâmetros de rastreamento
+                quizData = { ...quizData, ...event.data.data };
+                console.log("SUCESSO: Parâmetros recebidos via PostMessage:", quizData);
+            }
+        });
 
         document.addEventListener('DOMContentLoaded', () => {
             updateStepIndicator();
-            // 🚨 NOVO: Salva os parâmetros no quizData assim que a página carrega
-            const tracking = getTrackingParams();
-            quizData = { ...quizData, ...tracking };
-            
-            // Log para você verificar se a leitura ocorreu
-            console.log("Parâmetros de rastreamento lidos no quiz:", quizData);
         });
 
         function nextQuestion(step, button) {
             const answer = button.getAttribute('data-answer');
             
-            // Lógica de desqualificação (Mantida)
             if (step === 1 && answer === "Menos de 6 meses") {
                 showFail();
                 return;
@@ -306,7 +210,6 @@
                 return;
             }
 
-            // Esconde a pergunta atual e avança
             document.getElementById(`question${step}`).classList.add('hidden');
             currentStep++;
             updateStepIndicator();
@@ -316,7 +219,6 @@
             }
         }
         
-        // NOVO: Função para mostrar erro de CPF
         function showCpfError(show) {
             if (show) {
                 cpfInput.style.border = '2px solid #ef4444';
@@ -334,16 +236,13 @@
             const unmaskedCpf = cpfMask.unmaskedValue;
             
             if (unmaskedCpf.length === 11) {
-                showCpfError(false); // Remove erro se houver
+                showCpfError(false);
                 
-                // CPF SEM máscara para o CAPI/Planilha
                 quizData['cpf'] = unmaskedCpf; 
-                // CPF COM máscara para a mensagem do WhatsApp 
                 quizData['cpf_formatado'] = cpfMask.value; 
 
                 sendLeadAndRedirect(); 
             } else {
-                // Feedback visual e mensagem de erro para o CPF inválido
                 showCpfError(true);
             }
         });
@@ -353,8 +252,6 @@
         
         function generateWhatsAppURL() {
             const cpfFormatado = quizData.cpf_formatado || 'Não Informado';
-            
-            // Mensagem de WhatsApp com o CPF formatado
             const mensagemPura = `*PRÉ-APROVADO* ✅\n\nCPF para Simulação: ${cpfFormatado}\n\nOlá! Gostaria de falar com o consultor para realizar minha simulação de crédito.`;
             
             return `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(mensagemPura)}`;
@@ -363,26 +260,25 @@
         function redirectToWhatsApp() {
             const whatsappUrl = generateWhatsAppURL();
             
-            // Tenta abrir em uma nova aba (_blank) - Melhor para iframe
             const newWindow = window.open(whatsappUrl, '_blank'); 
             
-            // Tenta forçar o redirecionamento da janela principal (se permitido)
+            // Tenta forçar o redirecionamento da janela principal (Google Sites)
             try {
+                // Tenta fazer com que o Google Sites (window.top) redirecione
                 if (window.top !== window.self) {
                     window.top.location.href = whatsappUrl; 
                 }
             } catch (e) {
-                // Se o bloqueio de CORS impedir, a nova aba já foi aberta
-                console.error("Redirecionamento do iframe principal bloqueado. Nova aba aberta.");
+                // Se o redirecionamento principal for bloqueado, a nova aba será usada
+                console.error("Redirecionamento do iframe principal bloqueado (esperado no Sites). Nova aba aberta.");
             }
 
-            // Fallback: se a nova aba não abriu (por bloqueio de pop-up), tenta mudar a janela atual
+            // Fallback para caso o pop-up seja bloqueado
             if (!newWindow || newWindow.closed || typeof newWindow.closed == 'undefined') {
                 window.location.href = whatsappUrl;
             }
         }
 
-        // Função para enviar o Lead via submissão de formulário
         function sendLeadFormSubmission(dadosLead) {
             const form = document.createElement('form');
             form.method = 'POST';
@@ -390,7 +286,6 @@
             form.target = 'iframeLeadTarget'; 
             form.style.display = 'none';
 
-            // Adiciona campos ocultos
             for (const key in dadosLead) {
                 if (dadosLead.hasOwnProperty(key)) {
                     const input = document.createElement('input');
@@ -412,7 +307,7 @@
             // 1. DISPARA O EVENTO DE LEAD NO PIXEL (Navegador) 
             fbq('track', 'Lead'); 
             
-            // Monta o objeto final de dados para o Apps Script
+            // Monta o objeto final de dados, incluindo os dados de rastreamento recebidos
             const dadosLead = {
                 cpf: quizData.cpf || '', 
                 fbclid: quizData.fbclid || '',
@@ -426,7 +321,6 @@
             sendLeadFormSubmission(dadosLead);
 
             // 4. REDIRECIONA PARA O WHATSAPP
-            // Atraso de 500ms para dar tempo ao envio do lead.
             setTimeout(() => {
                 redirectToWhatsApp();
             }, 500);
