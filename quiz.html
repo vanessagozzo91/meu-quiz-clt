@@ -364,17 +364,14 @@
             }
         }
 
+        /**
+         * 🚨 CORREÇÃO PRINCIPAL: 
+         * A função agora lê os parâmetros DIRETAMENTE da URL do iframe,
+         * assumindo que o Google Sites irá repassá-los.
+         */
         function getTrackingParams() {
-            let params = new URLSearchParams();
-            try {
-                // Tenta pegar a URL do site pai (Google Sites)
-                const url = new URL(window.parent.location.href);
-                params = url.searchParams;
-            } catch (e) {
-                console.warn("Não foi possível acessar a URL pai. Usando a URL atual do Iframe.");
-                params = new URL(window.location.href).searchParams;
-            }
-            return params;
+            // Não tenta mais acessar o 'parent' (o que causa o bloqueio CORS)
+            return new URL(window.location.href).searchParams;
         }
 
         // Função para enviar o Lead via submissão de formulário
