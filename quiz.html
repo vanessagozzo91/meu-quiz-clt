@@ -254,7 +254,7 @@
         
         const totalSteps = 3; 
         let currentStep = 1;
-        // Objeto para armazenar APENAS o CPF e os dados de rastreio.
+        // Objeto para armazenar CPF e TODOS os dados de rastreio.
         let quizData = {};
         
         const cpfInput = document.getElementById('cpf-input');
@@ -271,8 +271,26 @@
             stepElement.innerHTML = `Passo <span class="orange-text-gradient">${displayStep}</span> de ${totalSteps}`;
         }
         
+        // 🚨 NOVO: Função para obter os parâmetros de rastreamento (lê a URL do iframe)
+        function getTrackingParams() {
+            const params = new URL(window.location.href).searchParams;
+            const tracking = {
+                fbclid: params.get("fbclid") || '',
+                utm_source: params.get("utm_source") || '',
+                utm_campaign: params.get("utm_campaign") || '',
+                ad_id: params.get("ad_id") || ''
+            };
+            return tracking;
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             updateStepIndicator();
+            // 🚨 NOVO: Salva os parâmetros no quizData assim que a página carrega
+            const tracking = getTrackingParams();
+            quizData = { ...quizData, ...tracking };
+            
+            // Log para você verificar se a leitura ocorreu
+            console.log("Parâmetros de rastreamento lidos no quiz:", quizData);
         });
 
         function nextQuestion(step, button) {
@@ -364,16 +382,6 @@
             }
         }
 
-        /**
-         * 🚨 CORREÇÃO PRINCIPAL: 
-         * A função agora lê os parâmetros DIRETAMENTE da URL do iframe,
-         * assumindo que o Google Sites irá repassá-los.
-         */
-        function getTrackingParams() {
-            // Não tenta mais acessar o 'parent' (o que causa o bloqueio CORS)
-            return new URL(window.location.href).searchParams;
-        }
-
         // Função para enviar o Lead via submissão de formulário
         function sendLeadFormSubmission(dadosLead) {
             const form = document.createElement('form');
@@ -404,16 +412,13 @@
             // 1. DISPARA O EVENTO DE LEAD NO PIXEL (Navegador) 
             fbq('track', 'Lead'); 
             
-            // 2. CAPTURA PARÂMETROS
-            const params = getTrackingParams();
-            
-            // Monta o objeto final de dados para o Apps Script (APENAS CPF E RASTREIO)
+            // Monta o objeto final de dados para o Apps Script
             const dadosLead = {
                 cpf: quizData.cpf || '', 
-                fbclid: params.get("fbclid") || '',
-                utm_source: params.get("utm_source") || '',
-                utm_campaign: params.get("utm_campaign") || '',
-                ad_id: params.get("ad_id") || '',
+                fbclid: quizData.fbclid || '',
+                utm_source: quizData.utm_source || '',
+                utm_campaign: quizData.utm_campaign || '',
+                ad_id: quizData.ad_id || '',
                 user_agent: navigator.userAgent
             };
 
