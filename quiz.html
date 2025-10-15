@@ -27,8 +27,14 @@
         .step-indicator { font-size: 0.95rem; font-weight: 500; margin-bottom: 25px; color: #6b7280; }
         .option-btn { display:block; width:100%; padding:18px; margin-bottom:15px; border-radius:12px; background: linear-gradient(90deg, #ff6b35 0%, #f7931e 100%); border: none; cursor:pointer; font-weight: 700; font-size: 1.05rem; color: #ffffff; transition: all 0.3s; box-shadow: 0 6px 15px rgba(247, 147, 30, 0.4); line-height: 1.2; }
         .option-btn:hover { background: linear-gradient(90deg, #f7931e 0%, #ff6b35 100%); color: #ffffff; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(247, 147, 30, 0.5); }
-        #cpf-input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #d1d5db; background-color: #f9fafb; color: #1f2937; font-size: 1.1rem; margin-top: 15px; box-sizing: border-box; text-align: center; transition: border 0.3s, box-shadow 0.3s; }
-        #cpf-error-message { color: #ef4444; font-size: 0.85rem; margin-top: 5px; font-weight: 500; }
+        /* Novos estilos para CPF e Data */
+        .input-group { display: flex; gap: 10px; margin-top: 15px; }
+        .input-group input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #d1d5db; background-color: #f9fafb; color: #1f2937; font-size: 1.1rem; box-sizing: border-box; text-align: center; transition: border 0.3s, box-shadow 0.3s; }
+        .input-group input::placeholder { color: #9ca3af; }
+        .input-group input:focus { border-color: #f7931e; box-shadow: 0 0 0 3px rgba(247, 147, 30, 0.2); outline: none; }
+        #cpf-input, #birth-date-input { margin-top: 0; }
+        /* Mensagens de erro */
+        #cpf-error-message, #idade-error-message { color: #ef4444; font-size: 0.85rem; margin-top: 5px; font-weight: 500; }
         .title-message { font-size: 1.8rem; font-weight: 700; color: #ef4444; margin: 30px 0 15px; } 
         .result-text { color: #4b5563; } 
         .cta-btn { display: inline-flex; align-items: center; margin-top: 25px; padding: 15px 35px; background: linear-gradient(90deg, #ff6b35 0%, #f7931e 100%); color: white; border-radius: 12px; font-size: 1.15rem; font-weight: 700; text-decoration: none; transition: all 0.3s; box-shadow: 0 8px 20px rgba(247, 147, 30, 0.4); cursor: pointer; border: none; }
@@ -45,6 +51,7 @@
             .form-card { padding: 20px; border-radius: 0; width: 100%; min-height: 100vh; margin: 0; box-shadow: none; }
             body { padding: 0; }
             .question h3 { font-size: 1.35rem; }
+            .input-group { flex-direction: column; gap: 0; }
         }
     </style>
 </head>
@@ -66,24 +73,37 @@
         <div id="step-info" class="step-indicator"></div>
 
         <div id="quizQuestions">
+            
             <div id="question1" class="question" data-step="1" data-q-key="q1">
-                <h3>Quantos meses você está registrado no seu emprego atual?</h3>
-                <button class="option-btn" data-answer="Menos de 6 meses" onclick="nextQuestion(1, this)">Menos de 6 meses</button>
-                <button class="option-btn" data-answer="6 meses ou mais" onclick="nextQuestion(1, this)">6 meses ou mais</button>
+                <h3>A empresa onde você trabalha tem:</h3>
+                <button class="option-btn" data-answer="Menos de 30 funcionarios" onclick="nextQuestion(1, this)">Menos de 30 funcionários</button>
+                <button class="option-btn" data-answer="30 ou Mais funcionarios" onclick="nextQuestion(1, this)">30 ou Mais funcionários</button>
             </div>
 
             <div id="question2" class="question hidden" data-step="2" data-q-key="q2">
+                <h3>Há quanto tempo você está registrado no seu emprego atual?</h3>
+                <button class="option-btn" data-answer="Menos de 6 meses" onclick="nextQuestion(2, this)">Menos de 6 meses</button>
+                <button class="option-btn" data-answer="6 meses ou mais" onclick="nextQuestion(2, this)">6 meses ou mais</button>
+            </div>
+
+            <div id="question3" class="question hidden" data-step="3" data-q-key="q3">
                 <h3>Você já realizou algum empréstimo consignado CLT?</h3>
-                <button class="option-btn" data-answer="Já realizei" onclick="nextQuestion(2, this)">Já realizei</button>
-                <button class="option-btn" data-answer="Ainda não" onclick="nextQuestion(2, this)">Ainda não</button>
+                <button class="option-btn" data-answer="Já realizei" onclick="nextQuestion(3, this)">Já realizei</button>
+                <button class="option-btn" data-answer="Ainda não" onclick="nextQuestion(3, this)">Ainda não</button>
             </div>
             
-            <div id="question3" class="question hidden" data-step="3">
-                <h3>Sua pré-análise foi <span class="orange-text-gradient">aprovada</span>! Para realizar a simulação, informe seu <span class="orange-text-gradient">CPF</span>:</h3>
+            <div id="question4" class="question hidden" data-step="4">
+                <h3>Sua pré-análise foi <span class="orange-text-gradient">aprovada</span>! Para simulação, informe <span class="orange-text-gradient">CPF e Data de Nascimento</span>:</h3>
                 
-                <input type="text" id="cpf-input" placeholder="000.000.000-00" maxlength="14" required>
+                <div class="input-group">
+                    <input type="text" id="cpf-input" placeholder="CPF (000.000.000-00)" maxlength="14" required>
+                    <input type="text" id="birth-date-input" placeholder="Nascimento (DD/MM/AAAA)" maxlength="10" required>
+                </div>
+                
                 <p id="cpf-error-message" class="hidden">Por favor, digite um CPF válido com 11 dígitos.</p>
-                <p class="text-sm mt-3 text-gray-500">Seu CPF é usado apenas para a simulação com o consultor e não será armazenado sem consentimento.</p>
+                <p id="idade-error-message" class="hidden">❌ Idade fora da política (21 a 59 anos).</p>
+                
+                <p class="text-sm mt-3 text-gray-500">Seus dados são usados apenas para a simulação com o consultor e não serão armazenados sem consentimento.</p>
                 
                 <button class="cta-btn" id="cpf-btn">
                     <svg class="w-6 h-6 mr-3" fill="currentColor" viewBox="0 0 24 24" width="24" height="24">
@@ -109,13 +129,13 @@
         const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwl1aWk0XavXE2L7qwrk_3XNlJku6pK76ezVSJ8moyMCeo_PKQ96HFLh2NzGSikThxB/exec'; 
         // ⭐️⭐️ ----------------------------------------- ⭐️⭐️
         
-        const totalSteps = 3; 
+        const totalSteps = 4;
         let currentStep = 1;
         
         // Objeto de dados do quiz com TODOS os 8 campos de rastreamento + FBP
         let quizData = {
             fbclid: '',
-            fbp: '', // 🆕 Adicionado FBP
+            fbp: '', 
             utm_source: '',
             utm_campaign: '',
             ad_id: '',
@@ -126,19 +146,43 @@
         };
         
         const cpfInput = document.getElementById('cpf-input');
+        const dateInput = document.getElementById('birth-date-input');
         const cpfBtn = document.getElementById('cpf-btn');
         const cpfErrorMsg = document.getElementById('cpf-error-message');
+        const idadeErrorMsg = document.getElementById('idade-error-message');
 
-        // Máscara de CPF
+        // Máscaras
         const cpfMask = IMask(cpfInput, { mask: '000.000.000-00' });
+        const dateMask = IMask(dateInput, { mask: '00/00/0000' });
 
         function updateStepIndicator() {
             const stepElement = document.getElementById('step-info');
-            const displayStep = Math.min(currentStep, totalSteps);
-            stepElement.innerHTML = `Passo <span class="orange-text-gradient">${displayStep}</span> de ${totalSteps}`;
+            const displayStep = Math.min(currentStep, 3);
+            stepElement.innerHTML = `Passo <span class="orange-text-gradient">${displayStep}</span> de 3`;
         }
         
-        // Função para ler o cookie _fbp (ID do navegador)
+        // Função para calcular a idade
+        function calculateAge(birthDateString) {
+            const parts = birthDateString.split('/');
+            if (parts.length !== 3) return null;
+            
+            const day = parseInt(parts[0], 10);
+            const month = parseInt(parts[1], 10) - 1;
+            const year = parseInt(parts[2], 10);
+            
+            const today = new Date();
+            const birthDate = new Date(year, month, day);
+
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const m = today.getMonth() - birthDate.getMonth();
+            
+            if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            return age;
+        }
+
+        // Função para ler o cookie _fbp
         function getFBP() {
             const name = '_fbp=';
             const decodedCookie = decodeURIComponent(document.cookie);
@@ -149,18 +193,15 @@
                     c = c.substring(1);
                 }
                 if (c.indexOf(name) === 0) {
-                    // Retorna apenas o valor, removendo o prefixo "_fbp="
                     return c.substring(name.length, c.length);
                 }
             }
             return '';
         }
 
-        // ⭐️ FUNÇÃO MODIFICADA PARA LER TODOS OS PARÂMETROS E O FBP ⭐️
         function readTrackingParamsFromQuery() {
             console.log("Iniciando leitura de parâmetros e cookies...");
             
-            // 1. LER QUERY STRING (Parâmetros UTM e FBCLID)
             const queryString = window.location.search;
             if (queryString) {
                 const urlParams = new URLSearchParams(queryString);
@@ -170,22 +211,18 @@
                 quizData.utm_campaign = urlParams.get("utm_campaign") || '';
                 quizData.ad_id = urlParams.get("ad_id") || urlParams.get("utm_id") || '';
                 
-                // Os 4 novos campos
                 quizData.utm_medium = urlParams.get("utm_medium") || '';
                 quizData.utm_content = urlParams.get("utm_content") || '';
                 quizData.utm_term = urlParams.get("utm_term") || '';
                 quizData.placement = urlParams.get("placement") || '';
             } 
             
-            // 2. LER COOKIE FBP
             quizData.fbp = getFBP(); 
 
             console.log("SUCESSO: Parâmetros lidos. FBP: " + (quizData.fbp ? quizData.fbp : 'NÃO ENCONTRADO'));
         }
 
-        // Evento que roda assim que o conteúdo da página é carregado
         document.addEventListener('DOMContentLoaded', () => {
-            // ✅ Executa a leitura da Query String e do FBP logo no carregamento
             readTrackingParamsFromQuery(); 
             updateStepIndicator();
         });
@@ -193,11 +230,20 @@
         function nextQuestion(step, button) {
             const answer = button.getAttribute('data-answer');
             
-            if (step === 1 && answer === "Menos de 6 meses") {
+            // ⭐️ REGRA DE REPROVAÇÃO Q1: Tamanho da Empresa (Menos de 30 funcionários) ⭐️
+            if (step === 1 && answer === "Menos de 30 funcionarios") {
                 showFail();
                 return;
             }
-            if (step === 2 && answer === "Já realizei") {
+            
+            // REGRA DE REPROVAÇÃO Q2: Tempo de CLT (Menos de 6 meses)
+            if (step === 2 && answer === "Menos de 6 meses") {
+                showFail();
+                return;
+            }
+
+            // REGRA DE REPROVAÇÃO Q3: Consignado Anterior (Já realizei)
+            if (step === 3 && answer === "Já realizei") {
                 showFail();
                 return;
             }
@@ -211,40 +257,70 @@
             }
         }
         
-        function showCpfError(show) {
+        function showCpfError(show, isIdadeError = false) {
+            const targetError = isIdadeError ? idadeErrorMsg : cpfErrorMsg;
+            const targetInput = isIdadeError ? dateInput : cpfInput;
+            
+            // Limpa ambos os erros visuais antes de aplicar o novo
+            cpfInput.style.border = '1px solid #d1d5db';
+            cpfInput.style.boxShadow = 'none';
+            dateInput.style.border = '1px solid #d1d5db';
+            dateInput.style.boxShadow = 'none';
+            cpfErrorMsg.classList.add('hidden');
+            idadeErrorMsg.classList.add('hidden');
+            
             if (show) {
-                cpfInput.style.border = '2px solid #ef4444';
-                cpfInput.style.boxShadow = '0 0 10px rgba(239, 68, 68, 0.5)';
-                cpfErrorMsg.classList.remove('hidden');
-                cpfInput.focus();
-            } else {
-                cpfInput.style.border = '1px solid #d1d5db';
-                cpfInput.style.boxShadow = 'none';
-                cpfErrorMsg.classList.add('hidden');
+                targetInput.style.border = '2px solid #ef4444';
+                targetInput.style.boxShadow = '0 0 10px rgba(239, 68, 68, 0.5)';
+                targetError.classList.remove('hidden');
+                targetInput.focus();
             }
         }
 
         cpfBtn.addEventListener('click', () => {
             const unmaskedCpf = cpfMask.unmaskedValue;
+            const unmaskedDate = dateMask.unmaskedValue;
             
-            if (unmaskedCpf.length === 11) {
-                showCpfError(false);
-                
-                quizData['cpf'] = unmaskedCpf; 
-                quizData['cpf_formatado'] = cpfMask.value; 
-
-                sendLeadAndRedirect(); 
-            } else {
-                showCpfError(true);
+            // 1. Validação do CPF
+            if (unmaskedCpf.length !== 11) {
+                showCpfError(true, false);
+                return;
             }
+            
+            // 2. Validação da Data de Nascimento (formato DD/MM/AAAA)
+            if (unmaskedDate.length !== 8) {
+                idadeErrorMsg.textContent = "Por favor, preencha a data completa (DD/MM/AAAA).";
+                showCpfError(true, true);
+                return;
+            }
+
+            // 3. Validação da Idade (21 a 59 anos)
+            const idade = calculateAge(dateMask.value);
+            
+            if (idade === null || idade < 21 || idade > 59) {
+                idadeErrorMsg.textContent = "❌ Idade fora da política (21 a 59 anos).";
+                showCpfError(true, true);
+                return;
+            }
+
+            // Se chegou até aqui, é válido!
+            showCpfError(false);
+            
+            quizData['cpf'] = unmaskedCpf; 
+            quizData['cpf_formatado'] = cpfMask.value; 
+            quizData['data_nascimento'] = dateMask.value;
+            quizData['idade'] = idade;
+
+            sendLeadAndRedirect(); 
         });
 
         // FUNÇÃO FINAL DE ENVIO CAPI E REDIRECIONAMENTO
         
         function generateWhatsAppURL() {
             const cpfFormatado = quizData.cpf_formatado || 'Não Informado';
-            // Mensagem clara para o consultor, que pode dar o próximo passo no atendimento.
-            const mensagemPura = `*PRÉ-APROVADO* ✅\n\nCPF para Simulação: ${cpfFormatado}\n\nOlá! Gostaria de falar com o consultor para realizar minha simulação de crédito.`;
+            const dataNascimento = quizData.data_nascimento || 'Não Informada';
+            
+            const mensagemPura = `*PRÉ-APROVADO* ✅\n\nCPF: ${cpfFormatado}\nData de Nascimento: ${dataNascimento}\n\nOlá! Gostaria de falar com o consultor para realizar minha simulação de crédito.`;
             
             return `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(mensagemPura)}`;
         }
@@ -252,10 +328,8 @@
         function redirectToWhatsApp() {
             const whatsappUrl = generateWhatsAppURL();
             
-            // Tenta abrir em uma nova aba para não perder a página de origem, se possível
             const newWindow = window.open(whatsappUrl, '_blank'); 
             
-            // Fallback caso o pop-up seja bloqueado
             if (!newWindow || newWindow.closed || typeof newWindow.closed == 'undefined') {
                 window.location.href = whatsappUrl;
             }
@@ -268,10 +342,9 @@
             form.target = 'iframeLeadTarget'; 
             form.style.display = 'none';
 
-            // Inclui o User Agent para o CAPI e outros dados
             dadosLead.timestamp_local = new Date().toLocaleString('pt-BR');
             dadosLead.page_url = window.location.href;
-            dadosLead.user_agent = navigator.userAgent; // Reincluído para garantir o envio
+            dadosLead.user_agent = navigator.userAgent; 
 
             for (const key in dadosLead) {
                 if (dadosLead.hasOwnProperty(key)) {
@@ -297,8 +370,10 @@
             // Monta o objeto final de dados com todos os parâmetros de rastreamento
             const dadosLead = {
                 cpf: quizData.cpf || '', 
+                data_nascimento: quizData.data_nascimento || '',
+                idade: quizData.idade || '',
                 fbclid: quizData.fbclid || '',
-                fbp: quizData.fbp || '', // ⭐️ FBP Adicionado ⭐️
+                fbp: quizData.fbp || '', 
                 utm_source: quizData.utm_source || '',
                 utm_campaign: quizData.utm_campaign || '',
                 ad_id: quizData.ad_id || '',
