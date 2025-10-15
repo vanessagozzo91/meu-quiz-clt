@@ -8,6 +8,7 @@
     <script src="https://unpkg.com/imask"></script>
     
     <script>
+        // Pixel do Facebook (Mantenha o seu ID aqui)
         !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window, document,'script','https://connect.facebook.com/en_US/fbevents.js');fbq('init', '1406224567314703');fbq('track', 'PageView');
     </script>
     <noscript>
@@ -15,6 +16,7 @@
     </noscript>
 
     <style>
+        /* Mantenha seu CSS aqui */
         body { font-family: 'Inter', sans-serif; background-color: #f7f9fb; margin:0; padding-top: 60px; padding-bottom: 60px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
         .hidden { display: none; }
         .form-card { max-width: 500px; width: 90%; margin: 0px auto; background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); text-align:center; border: 1px solid #f0f4f7; }
@@ -108,12 +110,18 @@
         
         const totalSteps = 3; 
         let currentStep = 1;
-        // Objeto inicializado com rastreamento vazio, que será preenchido
+        
+        // Objeto de dados do quiz com TODOS os campos de rastreamento do Meta
         let quizData = {
             fbclid: '',
             utm_source: '',
             utm_campaign: '',
-            ad_id: ''
+            ad_id: '',
+            // NOVOS CAMPOS ADICIONADOS AQUI:
+            utm_medium: '',
+            utm_content: '',
+            utm_term: '',
+            placement: ''
         };
         
         const cpfInput = document.getElementById('cpf-input');
@@ -129,33 +137,40 @@
             stepElement.innerHTML = `Passo <span class="orange-text-gradient">${displayStep}</span> de ${totalSteps}`;
         }
         
-        // CORRIGIDO: Função para ler os parâmetros do fragmento de hash (#)
-        function readTrackingParamsFromHash() {
-            console.log("Iniciando leitura de parâmetros da URL...");
-            // Pega a string DEPOIS do #
-            const hash = window.location.hash.substring(1);
-            console.log("Hash encontrado na URL:", hash);
+        // ⭐️ FUNÇÃO CORRIGIDA PARA LER A QUERY STRING (?) ⭐️
+        function readTrackingParamsFromQuery() {
+            console.log("Iniciando leitura de parâmetros da URL (Query String)...");
             
-            if (hash) {
-                // URLSearchParams é a forma correta de processar uma string de parâmetros
-                const urlParams = new URLSearchParams(hash);
+            // Pega a string DEPOIS do ?
+            const queryString = window.location.search;
+            console.log("Query String encontrada na URL:", queryString);
+            
+            if (queryString) {
+                // URLSearchParams é a forma correta de processar a string de parâmetros
+                const urlParams = new URLSearchParams(queryString);
                 
                 // .get() vai buscar o valor de cada parâmetro
                 quizData.fbclid = urlParams.get("fbclid") || '';
                 quizData.utm_source = urlParams.get("utm_source") || '';
                 quizData.utm_campaign = urlParams.get("utm_campaign") || '';
-                quizData.ad_id = urlParams.get("ad_id") || '';
+                quizData.ad_id = urlParams.get("ad_id") || urlParams.get("utm_id") || ''; // Captura ad_id ou utm_id
+                
+                // NOVOS CAMPOS LIDOS AQUI:
+                quizData.utm_medium = urlParams.get("utm_medium") || '';
+                quizData.utm_content = urlParams.get("utm_content") || '';
+                quizData.utm_term = urlParams.get("utm_term") || '';
+                quizData.placement = urlParams.get("placement") || '';
                 
                 console.log("SUCESSO: Parâmetros lidos e salvos no objeto quizData:", quizData);
             } else {
-                console.log("AVISO: Nenhum parâmetro de rastreamento (#) encontrado na URL.");
+                console.log("AVISO: Nenhum parâmetro de rastreamento (?) encontrado na URL.");
             }
         }
 
         // Evento que roda assim que o conteúdo da página é carregado
         document.addEventListener('DOMContentLoaded', () => {
-            // Executa a leitura do Hash logo no carregamento
-            readTrackingParamsFromHash(); 
+            // ✅ CORREÇÃO: Executa a leitura da Query String logo no carregamento
+            readTrackingParamsFromQuery(); 
             updateStepIndicator();
         });
 
@@ -236,6 +251,10 @@
             form.target = 'iframeLeadTarget'; 
             form.style.display = 'none';
 
+            // Inclui o Timestamp e o URL de origem para melhor rastreio
+            dadosLead.timestamp_local = new Date().toLocaleString('pt-BR');
+            dadosLead.page_url = window.location.href;
+
             for (const key in dadosLead) {
                 if (dadosLead.hasOwnProperty(key)) {
                     const input = document.createElement('input');
@@ -257,13 +276,19 @@
             // 1. DISPARA O EVENTO DE LEAD NO PIXEL (Navegador) 
             fbq('track', 'Lead'); 
             
-            // Monta o objeto final de dados
+            // Monta o objeto final de dados com todos os parâmetros de rastreamento
             const dadosLead = {
                 cpf: quizData.cpf || '', 
                 fbclid: quizData.fbclid || '',
                 utm_source: quizData.utm_source || '',
                 utm_campaign: quizData.utm_campaign || '',
                 ad_id: quizData.ad_id || '',
+                // NOVOS CAMPOS INCLUÍDOS AQUI
+                utm_medium: quizData.utm_medium || '',
+                utm_content: quizData.utm_content || '',
+                utm_term: quizData.utm_term || '',
+                placement: quizData.placement || '',
+                // FIM DOS NOVOS CAMPOS
                 user_agent: navigator.userAgent
             };
             
