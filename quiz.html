@@ -105,19 +105,20 @@
     <script>
         // ⭐️⭐️ POR FAVOR, CONFIRA ESTES DOIS VALORES! ⭐️⭐️
         const WHATSAPP_PHONE = '5514974000725'; 
+        // 🚨 SUBSTITUA pelo URL de EXECUÇÃO da sua Implantação APÓS salvar o code.gs V4.0
         const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwl1aWk0XavXE2L7qwrk_3XNlJku6pK76ezVSJ8moyMCeo_PKQ96HFLh2NzGSikThxB/exec'; 
         // ⭐️⭐️ ----------------------------------------- ⭐️⭐️
         
         const totalSteps = 3; 
         let currentStep = 1;
         
-        // Objeto de dados do quiz com TODOS os campos de rastreamento do Meta
+        // Objeto de dados do quiz com TODOS os 8 campos de rastreamento + FBP
         let quizData = {
             fbclid: '',
+            fbp: '', // 🆕 Adicionado FBP
             utm_source: '',
             utm_campaign: '',
             ad_id: '',
-            // NOVOS CAMPOS ADICIONADOS AQUI:
             utm_medium: '',
             utm_content: '',
             utm_term: '',
@@ -137,39 +138,54 @@
             stepElement.innerHTML = `Passo <span class="orange-text-gradient">${displayStep}</span> de ${totalSteps}`;
         }
         
-        // ⭐️ FUNÇÃO CORRIGIDA PARA LER A QUERY STRING (?) ⭐️
+        // Função para ler o cookie _fbp (ID do navegador)
+        function getFBP() {
+            const name = '_fbp=';
+            const decodedCookie = decodeURIComponent(document.cookie);
+            const ca = decodedCookie.split(';');
+            for(let i = 0; i <ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) === ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) === 0) {
+                    // Retorna apenas o valor, removendo o prefixo "_fbp="
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return '';
+        }
+
+        // ⭐️ FUNÇÃO MODIFICADA PARA LER TODOS OS PARÂMETROS E O FBP ⭐️
         function readTrackingParamsFromQuery() {
-            console.log("Iniciando leitura de parâmetros da URL (Query String)...");
+            console.log("Iniciando leitura de parâmetros e cookies...");
             
-            // Pega a string DEPOIS do ?
+            // 1. LER QUERY STRING (Parâmetros UTM e FBCLID)
             const queryString = window.location.search;
-            console.log("Query String encontrada na URL:", queryString);
-            
             if (queryString) {
-                // URLSearchParams é a forma correta de processar a string de parâmetros
                 const urlParams = new URLSearchParams(queryString);
                 
-                // .get() vai buscar o valor de cada parâmetro
                 quizData.fbclid = urlParams.get("fbclid") || '';
                 quizData.utm_source = urlParams.get("utm_source") || '';
                 quizData.utm_campaign = urlParams.get("utm_campaign") || '';
-                quizData.ad_id = urlParams.get("ad_id") || urlParams.get("utm_id") || ''; // Captura ad_id ou utm_id
+                quizData.ad_id = urlParams.get("ad_id") || urlParams.get("utm_id") || '';
                 
-                // NOVOS CAMPOS LIDOS AQUI:
+                // Os 4 novos campos
                 quizData.utm_medium = urlParams.get("utm_medium") || '';
                 quizData.utm_content = urlParams.get("utm_content") || '';
                 quizData.utm_term = urlParams.get("utm_term") || '';
                 quizData.placement = urlParams.get("placement") || '';
-                
-                console.log("SUCESSO: Parâmetros lidos e salvos no objeto quizData:", quizData);
-            } else {
-                console.log("AVISO: Nenhum parâmetro de rastreamento (?) encontrado na URL.");
-            }
+            } 
+            
+            // 2. LER COOKIE FBP
+            quizData.fbp = getFBP(); 
+
+            console.log("SUCESSO: Parâmetros lidos. FBP: " + (quizData.fbp ? quizData.fbp : 'NÃO ENCONTRADO'));
         }
 
         // Evento que roda assim que o conteúdo da página é carregado
         document.addEventListener('DOMContentLoaded', () => {
-            // ✅ CORREÇÃO: Executa a leitura da Query String logo no carregamento
+            // ✅ Executa a leitura da Query String e do FBP logo no carregamento
             readTrackingParamsFromQuery(); 
             updateStepIndicator();
         });
@@ -227,6 +243,7 @@
         
         function generateWhatsAppURL() {
             const cpfFormatado = quizData.cpf_formatado || 'Não Informado';
+            // Mensagem clara para o consultor, que pode dar o próximo passo no atendimento.
             const mensagemPura = `*PRÉ-APROVADO* ✅\n\nCPF para Simulação: ${cpfFormatado}\n\nOlá! Gostaria de falar com o consultor para realizar minha simulação de crédito.`;
             
             return `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(mensagemPura)}`;
@@ -235,7 +252,7 @@
         function redirectToWhatsApp() {
             const whatsappUrl = generateWhatsAppURL();
             
-            // Tenta abrir em uma nova aba, que é a melhor experiência
+            // Tenta abrir em uma nova aba para não perder a página de origem, se possível
             const newWindow = window.open(whatsappUrl, '_blank'); 
             
             // Fallback caso o pop-up seja bloqueado
@@ -251,9 +268,10 @@
             form.target = 'iframeLeadTarget'; 
             form.style.display = 'none';
 
-            // Inclui o Timestamp e o URL de origem para melhor rastreio
+            // Inclui o User Agent para o CAPI e outros dados
             dadosLead.timestamp_local = new Date().toLocaleString('pt-BR');
             dadosLead.page_url = window.location.href;
+            dadosLead.user_agent = navigator.userAgent; // Reincluído para garantir o envio
 
             for (const key in dadosLead) {
                 if (dadosLead.hasOwnProperty(key)) {
@@ -280,20 +298,17 @@
             const dadosLead = {
                 cpf: quizData.cpf || '', 
                 fbclid: quizData.fbclid || '',
+                fbp: quizData.fbp || '', // ⭐️ FBP Adicionado ⭐️
                 utm_source: quizData.utm_source || '',
                 utm_campaign: quizData.utm_campaign || '',
                 ad_id: quizData.ad_id || '',
-                // NOVOS CAMPOS INCLUÍDOS AQUI
                 utm_medium: quizData.utm_medium || '',
                 utm_content: quizData.utm_content || '',
                 utm_term: quizData.utm_term || '',
                 placement: quizData.placement || '',
-                // FIM DOS NOVOS CAMPOS
-                user_agent: navigator.userAgent
             };
             
-            // PONTO DE VERIFICAÇÃO CRÍTICO
-            console.log("Objeto 'dadosLead' que será enviado para a planilha:", dadosLead);
+            console.log("Objeto 'dadosLead' que será enviado para a planilha (VERIFIQUE O FBP):", dadosLead);
 
             // 2. ENVIA LEAD PARA O APPS SCRIPT
             sendLeadFormSubmission(dadosLead);
