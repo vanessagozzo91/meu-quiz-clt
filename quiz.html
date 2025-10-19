@@ -365,13 +365,12 @@
             setTimeout(() => form.remove(), 1000);
         }
 
-        // 🟢 FUNÇÃO sendLeadAndRedirect CORRIGIDA PARA DEDUPLICAÇÃO 🟢
+        // 🟢 FUNÇÃO sendLeadAndRedirect CORRIGIDA PARA DEDUPLICAÇÃO E CORRESPONDÊNCIA AVANÇADA NO PIXEL 🟢
         function sendLeadAndRedirect() {
-            // ⭐️ 1. GERAÇÃO DO EVENT_ID ÚNICO (CLIENT) ⭐️
-            // Gerar um ID único para deduplicação (usando timestamp e um número aleatório)
+            // 1. GERAÇÃO DO EVENT_ID ÚNICO (CLIENT)
             const eventId = `lead_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
 
-            // Monta o objeto final de dados com todos os parâmetros de rastreamento
+            // Monta o objeto final de dados para o APPS SCRIPT
             const dadosLead = {
                 cpf: quizData.cpf || '', 
                 data_nascimento: quizData.data_nascimento || '',
@@ -385,22 +384,41 @@
                 utm_content: quizData.utm_content || '',
                 utm_term: quizData.utm_term || '',
                 placement: quizData.placement || '',
-                // ⭐️ NOVO: Envia o Event ID para o CAPI usar na deduplicação ⭐️
                 event_id: eventId 
             };
             
+            // ⭐️ NOVIDADE: Prepara os dados de cliente para o Pixel ⭐️
+            // Formato de Aniversário (DOB) esperado: YYYYMMDD
+            let dob = '';
+            if (quizData.data_nascimento && quizData.data_nascimento.length === 10) {
+                const [day, month, year] = quizData.data_nascimento.split('/');
+                dob = year + month + day;
+            }
+
+            const userDataPixel = {};
+            // O CPF não formatado vai como Identificação Externa. O Pixel faz o hash.
+            if (quizData.cpf) {
+                userDataPixel.external_id = quizData.cpf;
+            }
+            // A data de nascimento vai como DOB. O Pixel faz o hash/validação.
+            if (dob) {
+                userDataPixel.dob = dob;
+            }
+            // Adiciona o fbp (cookiematch)
+            if (quizData.fbp) {
+                userDataPixel.fbp = quizData.fbp;
+            }
+            
             console.log("Objeto 'dadosLead' que será enviado para a planilha:", dadosLead);
+            console.log("Dados de Usuário enviados para o Pixel (Correspondência Avançada):", userDataPixel);
 
             // 2. ENVIA LEAD PARA O APPS SCRIPT (Priorizado para garantir o registro)
             sendLeadFormSubmission(dadosLead);
 
             // 3. DISPARA O EVENTO LEAD DO PIXEL COM DEDUPLICAÇÃO E CORRESPONDÊNCIA AVANÇADA
             fbq('track', 'Lead', 
-                // Parâmetros de Correspondência Avançada para o Pixel (Hashed PII é melhor via CAPI)
-                { 
-                    external_id: quizData.cpf || '', // O ID mais forte que temos aqui
-                }, 
-                // ⭐️ OPÇÕES DE DEDUPLICAÇÃO: Envia o event_id ⭐️
+                userDataPixel, // ⭐️ Parâmetros de Correspondência Avançada ⭐️
+                // Opções de Deduplicação
                 { 
                     eventID: eventId 
                 }
@@ -419,7 +437,17 @@
             document.getElementById('quizQuestions').classList.add('hidden');
             document.getElementById('step-info').classList.add('hidden');
             document.getElementById('resultFail').classList.remove('hidden');
-            fbq('trackCustom', 'QuizReprovado'); 
+            
+            // Reprovado também pode enviar External ID (CPF) para atribuição
+            const userDataPixel = {};
+            if (quizData.cpf) {
+                userDataPixel.external_id = quizData.cpf;
+            }
+            if (quizData.fbp) {
+                userDataPixel.fbp = quizData.fbp;
+            }
+
+            fbq('trackCustom', 'QuizReprovado', userDataPixel); 
         }
     </script>
 </body>
