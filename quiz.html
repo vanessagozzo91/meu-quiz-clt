@@ -127,7 +127,7 @@
     <script>
         // ⭐️⭐️ POR FAVOR, CONFIRA ESTES DOIS VALORES! ⭐️⭐️
         const WHATSAPP_PHONE = '5514974000725'; 
-        // 🚨 SUBSTITUA pelo URL de EXECUÇÃO da sua Implantação APÓS salvar o code.gs V4.0
+        // 🚨 SUBSTITUA pelo URL de EXECUÇÃO da sua Implantação APÓS salvar o code.gs
         const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwl1aWk0XavXE2L7qwrk_3XNlJku6pK76ezVSJ8moyMCeo_PKQ96HFLh2NzGSikThxB/exec'; 
         // ⭐️⭐️ ----------------------------------------- ⭐️⭐️
         
@@ -365,8 +365,12 @@
             setTimeout(() => form.remove(), 1000);
         }
 
-        // 🟢 FUNÇÃO sendLeadAndRedirect CORRIGIDA 🟢
+        // 🟢 FUNÇÃO sendLeadAndRedirect CORRIGIDA PARA DEDUPLICAÇÃO 🟢
         function sendLeadAndRedirect() {
+            // ⭐️ 1. GERAÇÃO DO EVENT_ID ÚNICO (CLIENT) ⭐️
+            // Gerar um ID único para deduplicação (usando timestamp e um número aleatório)
+            const eventId = `lead_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
+
             // Monta o objeto final de dados com todos os parâmetros de rastreamento
             const dadosLead = {
                 cpf: quizData.cpf || '', 
@@ -381,19 +385,31 @@
                 utm_content: quizData.utm_content || '',
                 utm_term: quizData.utm_term || '',
                 placement: quizData.placement || '',
+                // ⭐️ NOVO: Envia o Event ID para o CAPI usar na deduplicação ⭐️
+                event_id: eventId 
             };
             
-            console.log("Objeto 'dadosLead' que será enviado para a planilha (VERIFIQUE O FBP):", dadosLead);
+            console.log("Objeto 'dadosLead' que será enviado para a planilha:", dadosLead);
 
-            // 1. ENVIA LEAD PARA O APPS SCRIPT (Priorizado para garantir o registro)
+            // 2. ENVIA LEAD PARA O APPS SCRIPT (Priorizado para garantir o registro)
             sendLeadFormSubmission(dadosLead);
 
-            // 2. DISPARA OS EVENTOS DO PIXEL (O padrão 'Lead' e o novo customizado 'QuizPassou')
-            //    Desta forma, se houver qualquer problema no Pixel, o envio da planilha já foi acionado.
-            fbq('track', 'Lead'); 
+            // 3. DISPARA O EVENTO LEAD DO PIXEL COM DEDUPLICAÇÃO E CORRESPONDÊNCIA AVANÇADA
+            fbq('track', 'Lead', 
+                // Parâmetros de Correspondência Avançada para o Pixel (Hashed PII é melhor via CAPI)
+                { 
+                    external_id: quizData.cpf || '', // O ID mais forte que temos aqui
+                }, 
+                // ⭐️ OPÇÕES DE DEDUPLICAÇÃO: Envia o event_id ⭐️
+                { 
+                    eventID: eventId 
+                }
+            );
+            
+            // Dispara o evento customizado (não duplicado)
             fbq('trackCustom', 'QuizPassou');
             
-            // 3. REDIRECIONA PARA O WHATSAPP (com um pequeno delay para garantir o envio do Apps Script)
+            // 4. REDIRECIONA PARA O WHATSAPP
             setTimeout(() => {
                 redirectToWhatsApp();
             }, 500);
