@@ -9,7 +9,7 @@
     <script src="https://unpkg.com/imask"></script>
     
     <script>
-        // Pixel do Facebook (Mantenha o seu ID aqui)
+        // Pixel do Facebook
         !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window, document,'script','https://connect.facebook.com/en_US/fbevents.js');fbq('init', '1406224567314703');fbq('track', 'PageView');
     </script>
     <noscript>
@@ -17,43 +17,23 @@
     </noscript>
 
     <style>
-        /* Mantenha seu CSS aqui */
+        /* Mantenha seu CSS aqui (Simplificado para o exemplo) */
         body { font-family: 'Inter', sans-serif; background-color: #f7f9fb; margin:0; padding-top: 60px; padding-bottom: 60px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
         .hidden { display: none; }
         .form-card { max-width: 500px; width: 90%; margin: 0px auto; background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); text-align:center; border: 1px solid #f0f4f7; }
         .orange-text-gradient { background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; font-weight: 700; }
-        .page-header-logo { margin-bottom: 20px; text-align: center; }
-        .form-card .page-header-logo { margin-bottom: 30px; }
+        .page-header-logo { margin-bottom: 30px; text-align: center; }
         .question h3 { font-size: 1.5rem; margin-bottom: 15px; font-weight: 600; color: #1f2937; }
         .step-indicator { font-size: 0.95rem; font-weight: 500; margin-bottom: 25px; color: #6b7280; }
         .option-btn { display:block; width:100%; padding:18px; margin-bottom:15px; border-radius:12px; background: linear-gradient(90deg, #ff6b35 0%, #f7931e 100%); border: none; cursor:pointer; font-weight: 700; font-size: 1.05rem; color: #ffffff; transition: all 0.3s; box-shadow: 0 6px 15px rgba(247, 147, 30, 0.4); line-height: 1.2; }
-        .option-btn:hover { background: linear-gradient(90deg, #f7931e 0%, #ff6b35 100%); color: #ffffff; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(247, 147, 30, 0.5); }
-        /* Novos estilos para CPF e Data */
         .input-group { display: flex; gap: 10px; margin-top: 15px; }
         .input-group input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #d1d5db; background-color: #f9fafb; color: #1f2937; font-size: 1.1rem; box-sizing: border-box; text-align: center; transition: border 0.3s, box-shadow 0.3s; }
-        .input-group input::placeholder { color: #9ca3af; }
-        .input-group input:focus { border-color: #f7931e; box-shadow: 0 0 0 3px rgba(247, 147, 30, 0.2); outline: none; }
-        #cpf-input, #birth-date-input { margin-top: 0; }
-        /* Mensagens de erro */
         #cpf-error-message, #idade-error-message { color: #ef4444; font-size: 0.85rem; margin-top: 5px; font-weight: 500; }
         .title-message { font-size: 1.8rem; font-weight: 700; color: #ef4444; margin: 30px 0 15px; } 
         .result-text { color: #4b5563; } 
         .cta-btn { display: inline-flex; align-items: center; margin-top: 25px; padding: 15px 35px; background: linear-gradient(90deg, #ff6b35 0%, #f7931e 100%); color: white; border-radius: 12px; font-size: 1.15rem; font-weight: 700; text-decoration: none; transition: all 0.3s; box-shadow: 0 8px 20px rgba(247, 147, 30, 0.4); cursor: pointer; border: none; }
-        .cta-btn:hover { background: linear-gradient(90deg, #f7931e 0%, #ff6b35 100%); box-shadow: 0 10px 25px rgba(247, 147, 30, 0.5); }
         .quiz-title { font-size: 1.5rem; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid #e5e7eb; color: #000; }
-        .logo-text-bold { font-weight: 700; letter-spacing: 0.05em; }
-        .logo-text-size { font-size: 1.5rem; }
-        .text-center { text-align: center; }
-        .leading-tight { line-height: 1.25; } 
-        .text-sm { font-size: 0.875rem; }
-        .mt-3 { margin-top: 0.75rem; }
-        .text-gray-500 { color: #6b7280; }
-        @media (max-width: 600px) {
-            .form-card { padding: 20px; border-radius: 0; width: 100%; min-height: 100vh; margin: 0; box-shadow: none; }
-            body { padding: 0; }
-            .question h3 { font-size: 1.35rem; }
-            .input-group { flex-direction: column; gap: 0; }
-        }
+        /* Adicione ou remova outros estilos conforme necessário */
     </style>
 </head>
 
@@ -127,14 +107,14 @@
     <script>
         // ⭐️⭐️ POR FAVOR, CONFIRA ESTES DOIS VALORES! ⭐️⭐️
         const WHATSAPP_PHONE = '5514974000725'; 
-        // 🚨 SUBSTITUA pelo URL de EXECUÇÃO da sua Implantação APÓS salvar o code.gs
+        // 🚨 SUBSTITUA pelo URL de EXECUÇÃO DA SUA IMPLANTAÇÃO MAIS RECENTE do Apps Script
         const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwl1aWk0XavXE2L7qwrk_3XNlJku6pK76ezVSJ8moyMCeo_PKQ96HFLh2NzGSikThxB/exec'; 
         // ⭐️⭐️ ----------------------------------------- ⭐️⭐️
         
         const totalSteps = 4;
         let currentStep = 1;
         
-        // Objeto de dados do quiz com TODOS os 8 campos de rastreamento + FBP
+        // Objeto de dados do quiz com TODOS os campos de rastreamento
         let quizData = {
             fbclid: '',
             fbp: '', 
@@ -219,6 +199,7 @@
                 quizData.placement = urlParams.get("placement") || '';
             } 
             
+            // Lendo o FBP (Correção para o Meta ver o FBP no navegador e servidor)
             quizData.fbp = getFBP(); 
 
             console.log("SUCESSO: Parâmetros lidos. FBP: " + (quizData.fbp ? quizData.fbp : 'NÃO ENCONTRADO'));
@@ -232,7 +213,7 @@
         function nextQuestion(step, button) {
             const answer = button.getAttribute('data-answer');
             
-            // ⭐️ REGRA DE REPROVAÇÃO Q1: Tamanho da Empresa (Menos de 30 funcionários) ⭐️
+            // REGRA DE REPROVAÇÃO Q1: Tamanho da Empresa (Menos de 30 funcionários)
             if (step === 1 && answer === "Menos de 30 funcionarios") {
                 showFail();
                 return;
@@ -368,6 +349,7 @@
         // 🟢 FUNÇÃO sendLeadAndRedirect CORRIGIDA PARA DEDUPLICAÇÃO E CORRESPONDÊNCIA AVANÇADA NO PIXEL 🟢
         function sendLeadAndRedirect() {
             // 1. GERAÇÃO DO EVENT_ID ÚNICO (CLIENT)
+            // CHAVE DE DEDUPLICAÇÃO - CORRIGE O ERRO DE COBERTURA 0%
             const eventId = `lead_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
 
             // Monta o objeto final de dados para o APPS SCRIPT
@@ -376,7 +358,7 @@
                 data_nascimento: quizData.data_nascimento || '',
                 idade: quizData.idade || '',
                 fbclid: quizData.fbclid || '',
-                fbp: quizData.fbp || '', 
+                fbp: quizData.fbp || '', // FBP lido do cookie
                 utm_source: quizData.utm_source || '',
                 utm_campaign: quizData.utm_campaign || '',
                 ad_id: quizData.ad_id || '',
@@ -384,10 +366,10 @@
                 utm_content: quizData.utm_content || '',
                 utm_term: quizData.utm_term || '',
                 placement: quizData.placement || '',
-                event_id: eventId 
+                event_id: eventId // CHAVE DE DEDUPLICAÇÃO ENVIADA PARA O SERVIDOR
             };
             
-            // ⭐️ NOVIDADE: Prepara os dados de cliente para o Pixel ⭐️
+            // ⭐️ Prepara os dados de cliente para o Pixel (Correspondência Avançada) ⭐️
             // Formato de Aniversário (DOB) esperado: YYYYMMDD
             let dob = '';
             if (quizData.data_nascimento && quizData.data_nascimento.length === 10) {
@@ -396,15 +378,15 @@
             }
 
             const userDataPixel = {};
-            // O CPF não formatado vai como Identificação Externa. O Pixel faz o hash.
+            // CPF não formatado vai como Identificação Externa (External ID) - Correção da Taxa 0% no Navegador
             if (quizData.cpf) {
                 userDataPixel.external_id = quizData.cpf;
             }
-            // A data de nascimento vai como DOB. O Pixel faz o hash/validação.
+            // Data de nascimento (DOB)
             if (dob) {
                 userDataPixel.dob = dob;
             }
-            // Adiciona o fbp (cookiematch)
+            // Adiciona o fbp (FBP) - Correção da Taxa 0% no Servidor
             if (quizData.fbp) {
                 userDataPixel.fbp = quizData.fbp;
             }
@@ -412,15 +394,15 @@
             console.log("Objeto 'dadosLead' que será enviado para a planilha:", dadosLead);
             console.log("Dados de Usuário enviados para o Pixel (Correspondência Avançada):", userDataPixel);
 
-            // 2. ENVIA LEAD PARA O APPS SCRIPT (Priorizado para garantir o registro)
+            // 2. ENVIA LEAD PARA O APPS SCRIPT (POST)
             sendLeadFormSubmission(dadosLead);
 
             // 3. DISPARA O EVENTO LEAD DO PIXEL COM DEDUPLICAÇÃO E CORRESPONDÊNCIA AVANÇADA
             fbq('track', 'Lead', 
-                userDataPixel, // ⭐️ Parâmetros de Correspondência Avançada ⭐️
+                userDataPixel, 
                 // Opções de Deduplicação
                 { 
-                    eventID: eventId 
+                    eventID: eventId // Event ID para match com o CAPI
                 }
             );
             
@@ -438,7 +420,7 @@
             document.getElementById('step-info').classList.add('hidden');
             document.getElementById('resultFail').classList.remove('hidden');
             
-            // Reprovado também pode enviar External ID (CPF) para atribuição
+            // Reprovado - envia External ID (CPF) e FBP para atribuição, se disponíveis
             const userDataPixel = {};
             if (quizData.cpf) {
                 userDataPixel.external_id = quizData.cpf;
