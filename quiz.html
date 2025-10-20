@@ -254,7 +254,6 @@
             }
 
             // REGRA DE REPROVAÇÃO Q3: Consignado Anterior (Já realizei)
-            // 🚨 ATENÇÃO: Se esta for uma regra forte, mantenha a desqualificação. Se for apenas para sinalizar, remova o "return"
             if (step === 3 && answer === "Já realizei") {
                 showDisqualify('q3_consignado_anterior');
                 return;
@@ -289,7 +288,7 @@
             fbq('trackCustom', 'Lead_Disqualificado_PIXEL', 
                 { 
                     motivo: reason,
-                    // external_id: (quizData.cpf || 'nao_informado') // CPF ainda não foi informado nessa etapa, mas pode ser adicionado se necessário
+                    // external_id: (quizData.cpf || 'nao_informado') // CPF ainda não foi informado nessa etapa
                 },
                 { eventID: eventIdDisc,
                   userData: userDataPixel
@@ -469,8 +468,7 @@
                 }
             );
             
-            // Dispara o evento customizado (apenas para métricas de funil, não usado para otimização)
-            fbq('trackCustom', 'QuizPassou');
+            // ❌ REMOVIDO: fbq('trackCustom', 'QuizPassou'); -- Este evento agora é exclusivo do CAPI (onEdit)
             
             // 6. REDIRECIONA PARA O WHATSAPP
             setTimeout(() => {
