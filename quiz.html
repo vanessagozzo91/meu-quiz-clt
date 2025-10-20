@@ -125,7 +125,8 @@
 			utm_medium: '',
 			utm_content: '',
 			utm_term: '',
-			placement: ''
+			placement: '',
+			quiz_aprovado: '' // NOVO: Campo para rastrear o status de aprovação no quiz
 		};
 		
 		const cpfInput = document.getElementById('cpf-input');
@@ -216,18 +217,21 @@
 			
 			// REGRA DE REPROVAÇÃO Q1: Tamanho da Empresa (Menos de 30 funcionários)
 			if (step === 1 && answer === "Menos de 30 funcionarios") {
+				quizData.quiz_aprovado = 'false'; // NOVO: Define como reprovado
 				showFail();
 				return;
 			}
 			
 			// REGRA DE REPROVAÇÃO Q2: Tempo de CLT (Menos de 6 meses)
 			if (step === 2 && answer === "Menos de 6 meses") {
+				quizData.quiz_aprovado = 'false'; // NOVO: Define como reprovado
 				showFail();
 				return;
 			}
 
 			// REGRA DE REPROVAÇÃO Q3: Consignado Anterior (Já realizei)
 			if (step === 3 && answer === "Já realizei") {
+				quizData.quiz_aprovado = 'false'; // NOVO: Define como reprovado
 				showFail();
 				return;
 			}
@@ -268,6 +272,7 @@
 			// 1. Validação do CPF
 			if (unmaskedCpf.length !== 11) {
 				showCpfError(true, false);
+				quizData.quiz_aprovado = 'false'; // NOVO: Define como reprovado (bloqueio de submissão)
 				return;
 			}
 			
@@ -275,6 +280,7 @@
 			if (unmaskedDate.length !== 8) {
 				idadeErrorMsg.textContent = "Por favor, preencha a data completa (DD/MM/AAAA).";
 				showCpfError(true, true);
+				quizData.quiz_aprovado = 'false'; // NOVO: Define como reprovado (bloqueio de submissão)
 				return;
 			}
 
@@ -284,6 +290,7 @@
 			if (idade === null || idade < 21 || idade > 59) {
 				idadeErrorMsg.textContent = "❌ Idade fora da política (21 a 59 anos).";
 				showCpfError(true, true);
+				quizData.quiz_aprovado = 'false'; // NOVO: Define como reprovado (bloqueio de submissão)
 				return;
 			}
 
@@ -294,6 +301,7 @@
 			quizData['cpf_formatado'] = cpfMask.value;	
 			quizData['data_nascimento'] = dateMask.value;
 			quizData['idade'] = idade;
+			quizData.quiz_aprovado = 'true'; // NOVO: Define como aprovado na submissão
 
 			sendLeadAndRedirect();	
 		});
@@ -367,7 +375,8 @@
 				utm_content: quizData.utm_content || '',
 				utm_term: quizData.utm_term || '',
 				placement: quizData.placement || '',
-				event_id: eventId // CHAVE DE DEDUPLICAÇÃO ENVIADA PARA O SERVIDOR
+				event_id: eventId, // CHAVE DE DEDUPLICAÇÃO ENVIADA PARA O SERVIDOR
+				quiz_aprovado: quizData.quiz_aprovado || 'false' // NOVO: Adiciona o status de aprovação
 			};
 			
 			// ⭐️ Prepara os dados de cliente para o Pixel (Correspondência Avançada) ⭐️
