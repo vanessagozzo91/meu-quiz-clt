@@ -10,10 +10,10 @@
     
     <script>
         // 🚨 SUBSTITUA pelo URL de EXECUÇÃO DA SUA IMPLANTAÇÃO MAIS RECENTE do Apps Script
-        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwl1aWk0XavXE2L7qwrk_3XNlku6pK76ezVSJ8moyMCeo_PKQ96HFLh2NzGSikThxB/exec';
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwl1aWk0XavXE2L7qwrk_3XNlku6pK76ezVSJ8moyMCeo_PKQ96HFLh2NzGSikThxB/exec'; 
         const PIXEL_ID = '1406224567314703'; // SEU ID DO PIXEL
         const WHATSAPP_PHONE = '5514974000725';
-
+        
         // Pixel do Meta (Facebook)
         !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window, document,'script','https://connect.facebook.com/en_US/fbevents.js');fbq('init', PIXEL_ID);fbq('track', 'PageView');
     </script>
@@ -73,7 +73,7 @@
             </div>
 
             <div id="question3" class="question hidden" data-step="3" data-q-key="q3">
-                <h3>Você já realizou algum empréstimo consignado CLT? </h3>
+                <h3>Você já realizou algum empréstimo consignado CLT?</h3>
                 <button class="option-btn" data-answer="Já realizei" onclick="nextQuestion(3, this)">Já realizei</button>
                 <button class="option-btn" data-answer="Ainda não" onclick="nextQuestion(3, this)">Ainda não</button>
             </div>
@@ -143,11 +143,6 @@
         let currentStep = 1;
         
         let quizData = {
-            // Inicialização de campos para o Apps Script
-            q1: '',
-            q2: '',
-            q3: '',
-
             fbclid: '',
             fbp: '', 
             fbc: '', // Novo campo para FBC
@@ -245,13 +240,6 @@
 
         function nextQuestion(step, button) {
             const answer = button.getAttribute('data-answer');
-            const questionElement = document.getElementById(`question${step}`);
-            const qKey = questionElement.getAttribute('data-q-key'); // Pega a chave da pergunta (q1, q2, q3)
-
-            // 🌟 CORREÇÃO CRÍTICA: Armazena a resposta no quizData para ser enviada 🌟
-            if (qKey) {
-                quizData[qKey] = answer;
-            }
             
             // REGRA DE REPROVAÇÃO Q1: Tamanho da Empresa (Menos de 30 funcionários)
             if (step === 1 && answer === "Menos de 30 funcionarios") {
@@ -429,11 +417,6 @@
 
             // 2. MONTA OBJETO FINAL PARA O APPS SCRIPT
             const dadosLead = {
-                // 🌟 CORREÇÃO: Incluindo respostas do quiz (Q1, Q2, Q3) 🌟
-                q1: quizData.q1 || '',
-                q2: quizData.q2 || '',
-                q3: quizData.q3 || '',
-                
                 // Dados Pessoais do Quiz
                 cpf: quizData.cpf || '', 
                 data_nascimento: quizData.data_nascimento || '',
@@ -484,6 +467,8 @@
                     eventID: eventId // Event ID para match com o CAPI
                 }
             );
+            
+            // ❌ REMOVIDO: fbq('trackCustom', 'QuizPassou'); -- Este evento agora é exclusivo do CAPI (onEdit)
             
             // 6. REDIRECIONA PARA O WHATSAPP
             setTimeout(() => {
