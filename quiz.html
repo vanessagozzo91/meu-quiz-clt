@@ -215,15 +215,15 @@
 		function nextQuestion(step, button) {
 			const answer = button.getAttribute('data-answer');
 			
-			// REGRA DE REPROVAÇÃO Q1: Tamanho da Empresa (Menos de 30 funcionários)
-			if (step === 1 && answer === "Menos de 30 funcionarios") {
+			// REGRA DE REPROVAÇÃO Q1: Tamanho da Empresa (Menos de 20 funcionários)
+			if (step === 1 && answer === "Menos de 20 funcionarios") {
 				quizData.quiz_aprovado = 'false'; // NOVO: Define como reprovado
 				showFail();
 				return;
 			}
 			
-			// REGRA DE REPROVAÇÃO Q2: Tempo de CLT (Menos de 6 meses)
-			if (step === 2 && answer === "Menos de 6 meses") {
+			// REGRA DE REPROVAÇÃO Q2: Tempo de CLT (Menos de 3 meses)
+			if (step === 2 && answer === "Menos de 3 meses") {
 				quizData.quiz_aprovado = 'false'; // NOVO: Define como reprovado
 				showFail();
 				return;
@@ -447,5 +447,6 @@
 	</script>
 </body>
 </html>
+
 
 
