@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Especial Crédito - Especialista em soluções financeiras</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Fonte Inter (Geral) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Fonte Bebas Neue (Para o Logo) -->
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        /* Nova classe para a fonte do logo */
+        .bebas-neue {
+            font-family: 'Bebas Neue', sans-serif;
+            letter-spacing: 0.05em; /* Ajuste sutil no espaçamento para melhor leitura */
+        }
+        .whatsapp-pulse {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        .fade-in {
+            animation: fadeIn 0.8s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .orange-accent {
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+        }
+        .orange-text {
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        /* Sublinhado com degradê laranja para a palavra "financeiras" */
+        .underline-orange-gradient {
+            position: relative;
+            display: inline-block;
+            color: white; /* Garante que a palavra seja branca */
+        }
+        .underline-orange-gradient::after {
+            content: '';
+            position: absolute;
+            bottom: -8px; /* Posição abaixo do texto */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%; /* Largura total da palavra */
+            height: 3px;
+            background: linear-gradient(90deg, #ff6b35 0%, #f7931e 100%); /* Degradê laranja */
+            border-radius: 9999px; /* Cantos arredondados */
+        }
+    </style>
+</head>
+<body class="bg-white">
+
+    <script>
+        const WHATSAPP_PHONE = '5514974000725';
+        const WHATSAPP_MESSAGE = 'Olá! Cheguei através do site e gostaria de falar com um consultor sobre soluções financeiras.';
+        const WHATSAPP_URL = `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
+    </script>
+
+    <!-- SEÇÃO 1: HERO (Introdução) -->
+    <section class="bg-black text-white py-20 px-4">
+        <div class="max-w-6xl mx-auto">
+            
+            <!-- Logomarca em Texto -->
+            <div class="flex justify-center mb-16 fade-in">
+                <div class="text-center bebas-neue leading-none">
+                    <div class="text-6xl sm:text-7xl md:text-8xl text-white">ESPECIAL</div>
+                    <div class="text-6xl sm:text-7xl md:text-8xl orange-text -mt-2 md:-mt-4">CRÉDITO</div>
+                </div>
+            </div>
+
+            <div class="text-center max-w-4xl mx-auto">
+                <!-- TÍTULO ATUALIZADO -->
+                <h2 class="text-4xl md:text-6xl font-light mb-8 leading-tight fade-in text-white">
+                    Especialista em soluções <span class="underline-orange-gradient">financeiras</span>
+                </h2>
+
+                <p class="text-xl text-gray-300 mb-12 max-w-2xl mx-auto leading-relaxed fade-in">
+                    Atendimento rápido, transparente e direto pelo WhatsApp
+                </p>
+
+                <div class="fade-in">
+                    <a href="javascript:void(0)" onclick="window.open(WHATSAPP_URL, '_blank')" 
+                        class="whatsapp-pulse inline-flex items-center bg-gradient-to-r from-[#ff6b35] to-[#f7931e] text-white font-medium py-4 px-8 rounded-lg text-lg transition-all duration-300 hover:shadow-2xl transform hover:-translate-y-1 mb-6">
+                        <svg class="w-6 h-6 mr-3" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-.694.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.465 3.516"/>
+                        </svg>
+                        Falar com consultor
+                    </a>
+                    
+                    <div class="mt-4">
+                        <a href="https://www.instagram.com/especialcreditooficial/" target="_blank"
+                            class="text-gray-400 hover:text-orange-500 transition-colors text-sm">
+                            @especialcreditooficial
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SEÇÃO 2: VANTAGENS (Mantido) -->
+    <section class="py-20 px-4 bg-gray-50">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h3 class="text-3xl md:text-4xl font-light text-black mb-4">
+                    Por que escolher a <span class="orange-text">Especial Crédito</span>?
+                </h3>
+                <div class="w-20 h-1 orange-accent mx-auto rounded-full"></div>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="text-center p-8 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                    <div class="w-16 h-16 orange-accent rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                    </div>
+                    <h4 class="text-lg font-medium text-black mb-3">Processo Rápido</h4>
+                    <p class="text-gray-600 text-sm leading-relaxed">Tudo simples e direto, sem burocracias desnecessárias</p>
+                </div>
+
+                <div class="text-center p-8 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                    <div class="w-16 h-16 orange-accent rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"/>
+                        </svg>
+                    </div>
+                    <h4 class="text-lg font-medium text-black mb-3">Atendimento Humanizado</h4>
+                    <p class="text-gray-600 text-sm leading-relaxed">Fale com pessoas reais que entendem suas necessidades</p>
+                </div>
+
+                <div class="text-center p-8 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                    <div class="w-16 h-16 orange-accent rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <h4 class="text-lg font-medium text-black mb-3">Soluções Personalizadas</h4>
+                    <p class="text-gray-600 text-sm leading-relaxed">Opções de crédito que se adaptam ao seu perfil</p>
+                </div>
+
+                <div class="text-center p-8 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                    <div class="w-16 h-16 orange-accent rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                        </svg>
+                    </div>
+                    <h4 class="text-lg font-medium text-black mb-3">Segurança Total</h4>
+                    <p class="text-gray-600 text-sm leading-relaxed">Seus dados protegidos conforme a LGPD</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SEÇÃO 3: NOSSOS SERVIÇOS (NOVA SEÇÃO) -->
+    <section class="py-20 px-4 bg-white">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h3 class="text-3xl md:text-4xl font-light text-black mb-4">
+                    Nossos <span class="orange-text">Principais Serviços</span>
+                </h3>
+                <div class="w-20 h-1 orange-accent mx-auto rounded-full"></div>
+                <p class="text-gray-600 mt-4 max-w-2xl mx-auto">
+                    Soluções de crédito rápidas e seguras para atender todas as suas necessidades financeiras.
+                </p>
+            </div>
+
+            <!-- Cards de Serviços - 3 Colunas -->
+            <div class="grid md:grid-cols-3 gap-8">
+                
+                <!-- Cartão 1: Crédito CLT -->
+                <div class="p-8 bg-gray-50 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border-b-4 border-transparent hover:border-[#ff6b35] transform hover:-translate-y-1">
+                    <div class="w-16 h-16 orange-accent rounded-full flex items-center justify-center mx-auto mb-6">
+                        <!-- Icone: Documento (Representa contrato/folha de pagamento) -->
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m-6 4h6m-7 0H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2h-2m-10 0l-4-4"/>
+                        </svg>
+                    </div>
+                    <h4 class="text-xl font-semibold text-black mb-3 text-center">Crédito Consignado CLT</h4>
+                    <p class="text-gray-600 text-sm leading-relaxed text-center">
+                        Crédito com desconto direto na folha para colaboradores de empresas privadas (CLT). Taxas mais baixas e longos prazos.
+                    </p>
+                </div>
+
+                <!-- Cartão 2: Crédito com Garantia do Veículo -->
+                <div class="p-8 bg-gray-50 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border-b-4 border-transparent hover:border-[#ff6b35] transform hover:-translate-y-1">
+                    <div class="w-16 h-16 orange-accent rounded-full flex items-center justify-center mx-auto mb-6">
+                        <!-- Icone: Carro (Garantia do Veículo) -->
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 0h2v2H7v-2zm10 0h2v2h-2v-2zm-9 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    <h4 class="text-xl font-semibold text-black mb-3 text-center">Crédito com Garantia de Veículo</h4>
+                    <p class="text-gray-600 text-sm leading-relaxed text-center">
+                        Use seu carro quitado como garantia para obter o dinheiro. As melhores taxas e o carro continua com você!
+                    </p>
+                </div>
+
+                <!-- Cartão 3: Saque FGTS -->
+                <div class="p-8 bg-gray-50 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border-b-4 border-transparent hover:border-[#ff6b35] transform hover:-translate-y-1">
+                    <div class="w-16 h-16 orange-accent rounded-full flex items-center justify-center mx-auto mb-6">
+                        <!-- Icone: Dinheiro/Cofre/Moedas (Representa saque/resgate) -->
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.592 1L12 11V8m-6 8h12a2 2 0 002-2v-3.483l-1.07-1.07M4 14V6a2 2 0 012-2h12a2 2 0 012 2v8M10 20h4M8 17h8"/>
+                        </svg>
+                    </div>
+                    <h4 class="text-xl font-semibold text-black mb-3 text-center">Antecipação Saque FGTS</h4>
+                    <p class="text-gray-600 text-sm leading-relaxed text-center">
+                        Antecipe parcelas do seu Saque Aniversário do FGTS de forma rápida, 100% digital e sem consulta ao SPC/Serasa.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SEÇÃO 4: USE SEU CRÉDITO (Mudou para bg-gray-50 para intercalar) -->
+    <section class="py-20 px-4 bg-gray-50">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h3 class="text-3xl md:text-4xl font-light text-black mb-4">
+                    Use seu crédito do <span class="orange-text">seu jeito</span>
+                </h3>
+                <div class="w-20 h-1 orange-accent mx-auto rounded-full"></div>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="text-center group">
+                    <div class="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-orange-50 transition-colors">
+                        <svg class="w-10 h-10 text-gray-600 group-hover:text-orange-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                        </svg>
+                    </div>
+                    <h4 class="text-lg font-medium text-black mb-3">Projetos Pessoais</h4>
+                    <p class="text-gray-600 text-sm">Transforme seus sonhos em realidade</p>
+                </div>
+
+                <div class="text-center group">
+                    <div class="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-orange-50 transition-colors">
+                        <svg class="w-10 h-10 text-gray-600 group-hover:text-orange-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                        </svg>
+                    </div>
+                    <h4 class="text-lg font-medium text-black mb-3">Investir no Negócio</h4>
+                    <p class="text-gray-600 text-sm">Faça sua empresa crescer</p>
+                </div>
+
+                <div class="text-center group">
+                    <div class="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-orange-50 transition-colors">
+                        <svg class="w-10 h-10 text-gray-600 group-hover:text-orange-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    <h4 class="text-lg font-medium text-black mb-3">Organizar Finanças</h4>
+                    <p class="text-gray-600 text-sm">Quite dívidas e organize sua vida</p>
+                </div>
+
+                <div class="text-center group">
+                    <div class="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-orange-50 transition-colors">
+                        <svg class="w-10 h-10 text-gray-600 group-hover:text-orange-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                        </svg>
+                    </div>
+                    <h4 class="text-lg font-medium text-black mb-3">Compras Importantes</h4>
+                    <p class="text-gray-600 text-sm">Realize aquela compra especial</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SEÇÃO 5: CTA (Chamada para Ação) -->
+    <section class="py-20 px-4 bg-black">
+        <div class="max-w-4xl mx-auto text-center">
+            <h3 class="text-3xl md:text-4xl font-light text-white mb-6">
+                Pronto para dar o <span class="orange-text">próximo passo</span>?
+            </h3>
+            
+            <p class="text-xl text-gray-300 mb-12 max-w-2xl mx-auto">
+                Converse agora mesmo com um consultor da Especial Crédito
+            </p>
+
+            <a href="javascript:void(0)" onclick="window.open(WHATSAPP_URL, '_blank')" 
+                class="whatsapp-pulse inline-flex items-center bg-gradient-to-r from-[#ff6b35] to-[#f7931e] text-white font-medium py-4 px-8 rounded-lg text-lg transition-all duration-300 hover:shadow-2xl transform hover:-translate-y-1">
+                <svg class="w-6 h-6 mr-3" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.465 3.516"/>
+                </svg>
+                Falar com consultor
+            </a>
+        </div>
+    </section>
+
+    <!-- FOOTER (Rodapé) -->
+    <footer class="bg-gray-900 text-white py-16 px-4">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-12">
+                <h4 class="text-2xl font-light mb-2">Especial Crédito</h4>
+                <p class="text-gray-400">Atendimento sigiloso e seguro</p>
+            </div>
+            
+            <div class="flex justify-center space-x-8 mb-8">
+                <a href="javascript:void(0)" onclick="window.open(WHATSAPP_URL, '_blank')" class="text-gray-400 hover:text-orange-500 transition-colors">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.465 3.516"/>
+                    </svg>
+                </a>
+                <a href="https://www.instagram.com/especialcreditooficial/" target="_blank" class="text-gray-400 hover:text-orange-500 transition-colors">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                    </svg>
+                </a>
+            </div>
+            
+            <div class="text-center border-t border-gray-800 pt-8">
+                <p class="text-gray-500 text-sm">
+                    © 2025 Especial Crédito. Todos os direitos reservados. | Dados protegidos conforme LGPD
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Cookie Consent Popup (FIXO NO RODAPÉ) -->
+    <div id="cookieConsent" 
+        class="fixed bottom-0 left-0 right-0 bg-white shadow-2xl p-4 md:p-6 flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 z-50 fade-in border-t border-gray-200" 
+        style="display: none; font-family: 'Inter', sans-serif;">
+        
+        <!-- Container para centralizar o conteúdo e limitar a largura -->
+        <div class="max-w-6xl mx-auto w-full flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
+            <p class="text-gray-800 text-sm md:text-base md:mr-6 text-center md:text-left">
+                Nós usamos cookies para melhorar sua experiência neste site. Ao continuar navegando, você concorda com a nossa política de cookies.
+            </p>
+            <button id="acceptCookies" class="mt-3 md:mt-0 bg-gradient-to-r from-[#ff6b35] to-[#f7931e] hover:from-[#f7931e] hover:to-[#ff6b35] text-white font-medium py-2 px-4 rounded-lg transition-all flex-shrink-0">
+                Aceitar
+            </button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Lógica para controle de exibição do cookie consent
+            var consent = localStorage.getItem('cookiesAccepted');
+            var popup = document.getElementById('cookieConsent');
+
+            if (!consent) {
+                // Exibe o pop-up com display: flex para manter o layout do Tailwind
+                popup.style.display = 'flex'; 
+            }
+
+            document.getElementById('acceptCookies').addEventListener('click', function() {
+                localStorage.setItem('cookiesAccepted', 'true');
+                popup.style.display = 'none';
+            });
+        });
+    </script>
+</body>
+</html>
