@@ -58,21 +58,21 @@
 		<div id="quizQuestions">
 			
 			<div id="question1" class="question" data-step="1" data-q-key="q1">
-				<h3>Você trabalha registrado(a) CLT?</h3>
-				<button class="option-btn" data-answer="Não sou CLT (autônomo, MEI ou outros)" onclick="nextQuestion(1, this)">Não sou CLT (autônomo, MEI ou outros)</button>
-				<button class="option-btn" data-answer="Sim, trabalho registrado (CLT)" onclick="nextQuestion(1, this)">Sim, trabalho registrado (CLT)</button>
+				<h3>Você trabalha com carteira assinada(CLT)?</h3>
+				<button class="option-btn" data-answer="Sim" onclick="nextQuestion(1, this)">Sim</button>
+				<button class="option-btn" data-answer="Não" onclick="nextQuestion(1, this)">Não</button>		
 			</div>
 
 			<div id="question2" class="question hidden" data-step="2" data-q-key="q2">
 				<h3>A empresa onde você trabalha tem:</h3>
-				<button class="option-btn" data-answer="Menos de 10 funcionarios" onclick="nextQuestion(2, this)">Menos de 10 funcionários</button>
 				<button class="option-btn" data-answer="Mais de 10 funcionários" onclick="nextQuestion(2, this)">Mais de 10 funcionários</button>
+				<button class="option-btn" data-answer="Menos de 10 funcionarios" onclick="nextQuestion(2, this)">Menos de 10 funcionários</button>				
 			</div>
 
 			<div id="question3" class="question hidden" data-step="3" data-q-key="q3">
 				<h3>Você já fez empréstimo consignado CLT?</h3>
-				<button class="option-btn" data-answer="Já fiz e não tenho limite disponível(quero refin ou portabilidade)" onclick="nextQuestion(3, this)">Já fiz e não tenho limite disponível(quero refin ou portabilidade)</button>
-				<button class="option-btn" data-answer="Não fiz ainda / fiz, mas ainda posso contratar outro" onclick="nextQuestion(3, this)">Não fiz ainda / fiz, mas ainda posso contratar outro</button>
+				<button class="option-btn" data-answer="Não / Sim, mas tenho limite ainda" onclick="nextQuestion(3, this)">Não / Sim, mas tenho limite ainda</button>
+				<button class="option-btn" data-answer="Sim (quero refin ou portabilidade)" onclick="nextQuestion(3, this)">Sim (quero refin ou portabilidade)</button>				
 			</div>
 			
 			<div id="question4" class="question hidden" data-step="4">
@@ -215,8 +215,8 @@
 		function nextQuestion(step, button) {
 			const answer = button.getAttribute('data-answer');
 			
-			// REGRA DE REPROVAÇÃO Q1: Trabalho Registrado (Não sou CLT (autônomo, MEI ou outros))
-			if (step === 1 && answer === "Não sou CLT (autônomo, MEI ou outros)") {
+			// REGRA DE REPROVAÇÃO Q1: Trabalho Registrado (Nãos))
+			if (step === 1 && answer === "Não") {
 				quizData.quiz_aprovado = 'false'; // NOVO: Define como reprovado
 				showFail();
 				return;
@@ -229,8 +229,8 @@
 				return;
 			}
 
-			// REGRA DE REPROVAÇÃO Q3: Consignado Anterior (Já fiz e não tenho limite disponível(quero refin ou portabilidade))
-			if (step === 3 && answer === "Já fiz e não tenho limite disponível(quero refin ou portabilidade)") {
+			// REGRA DE REPROVAÇÃO Q3: Consignado Anterior (Sim (quero refin ou portabilidade))
+			if (step === 3 && answer === "Sim (quero refin ou portabilidade)") {
 				quizData.quiz_aprovado = 'false'; // NOVO: Define como reprovado
 				showFail();
 				return;
@@ -447,6 +447,7 @@
 	</script>
 </body>
 </html>
+
 
 
 
