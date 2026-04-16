@@ -300,7 +300,7 @@ Informe seus dados para verificar<br>as condições disponíveis:
 			const cpfFormatado = quizData.cpf_formatado || 'Não Informado';
 			const dataNascimento = quizData.data_nascimento || 'Não Informada';
 			
-			const mensagemPura = `*PRÉ-APROVADO* ✅\n\nCPF: ${cpfFormatado}\nData de Nascimento: ${dataNascimento}\n\nOlá! Gostaria de falar com o consultor para realizar minha simulação de crédito.`;
+			const mensagemPura = `CPF: ${cpfFormatado}\nData de Nascimento: ${dataNascimento}\n\nOlá! Quero ver minha simulação de crédito CLT.`;
 			
 			return `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(mensagemPura)}`;
 		}
