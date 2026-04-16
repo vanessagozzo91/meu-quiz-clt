@@ -63,18 +63,7 @@
 				<button class="option-btn" data-answer="Não" onclick="nextQuestion(1, this)">Não</button>		
 			</div>
 
-			<div id="question2" class="question hidden" data-step="2" data-q-key="q2">
-				<h3>A empresa onde você trabalha tem:</h3>
-				<button class="option-btn" data-answer="Mais de 10 funcionários" onclick="nextQuestion(2, this)">Mais de 10 funcionários</button>
-				<button class="option-btn" data-answer="Menos de 10 funcionarios" onclick="nextQuestion(2, this)">Menos de 10 funcionários</button>				
-			</div>
-
-			<div id="question3" class="question hidden" data-step="3" data-q-key="q3">
-				<h3>Você já fez empréstimo consignado CLT?</h3>
-				<button class="option-btn" data-answer="Não (ainda tenho limite)" onclick="nextQuestion(3, this)">Não (ainda tenho limite)</button>
-				<button class="option-btn" data-answer="Sim (quero refin ou portabilidade)" onclick="nextQuestion(3, this)">Sim (quero refin ou portabilidade)</button>				
-			</div>
-			
+						
 			<div id="question4" class="question hidden" data-step="4">
 				<h3>Sua pré-análise foi <span class="orange-text-gradient">aprovada</span>! Para simulação, informe <span class="orange-text-gradient">CPF e Data de Nascimento</span>:</h3>
 				
@@ -112,7 +101,7 @@
 		const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwN9E1jzxWcMrDHzaloTumRzDAZlggoYz0y9j-F2XK1oZP-_nlQQmhRjT-DqYGONPRE/exec';	
 		// ⭐️⭐️ ----------------------------------------- ⭐️⭐️
 		
-		const totalSteps = 4;
+		const totalSteps = 2;
 		let currentStep = 1;
 		
 		// Objeto de dados do quiz com TODOS os campos de rastreamento
@@ -213,38 +202,22 @@
 		});
 
 		function nextQuestion(step, button) {
-			const answer = button.getAttribute('data-answer');
-			
-			// REGRA DE REPROVAÇÃO Q1: Trabalho Registrado (Nãos))
-			if (step === 1 && answer === "Não") {
-				quizData.quiz_aprovado = 'false'; // NOVO: Define como reprovado
-				showFail();
-				return;
-			}
-			
-			// REGRA DE REPROVAÇÃO Q2: Tamanho da Empresa (Menos de 10 funcionários)
-			if (step === 2 && answer === "Menos de 10 funcionarios") {
-				quizData.quiz_aprovado = 'false'; // NOVO: Define como reprovado
-				showFail();
-				return;
-			}
+	const answer = button.getAttribute('data-answer');
 
-			// REGRA DE REPROVAÇÃO Q3: Consignado Anterior (Sim (quero refin ou portabilidade))
-			if (step === 3 && answer === "Sim (quero refin ou portabilidade)") {
-				quizData.quiz_aprovado = 'false'; // NOVO: Define como reprovado
-				showFail();
-				return;
-			}
+	// Se NÃO for CLT → reprova
+	if (step === 1 && answer === "Não") {
+		quizData.quiz_aprovado = 'false';
+		showFail();
+		return;
+	}
 
-			document.getElementById(`question${step}`).classList.add('hidden');
-			currentStep++;
-			updateStepIndicator();
-			
-			if (currentStep <= totalSteps) {
-				document.getElementById(`question${currentStep}`).classList.remove('hidden');
-			}
-		}
-		
+	// Se for CLT → vai direto pro CPF
+	document.getElementById(`question${step}`).classList.add('hidden');
+	currentStep = 2;
+	updateStepIndicator();
+	document.getElementById(`question4`).classList.remove('hidden');
+}
+				
 		function showCpfError(show, isIdadeError = false) {
 			const targetError = isIdadeError ? idadeErrorMsg : cpfErrorMsg;
 			const targetInput = isIdadeError ? dateInput : cpfInput;
