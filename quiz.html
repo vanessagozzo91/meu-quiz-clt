@@ -104,8 +104,8 @@ Clique abaixo para continuar sua simulação
 		const idadeErrorMsg = document.getElementById('idade-error-message');
 
 		// Máscaras
-		const cpfMask = IMask(cpfInput, { mask: '000.000.000-00' });
-		const dateMask = IMask(dateInput, { mask: '00/00/0000' });
+		const cpfMask = cpfInput ? IMask(cpfInput, { mask: '000.000.000-00' }) : null;
+		const dateMask = dateInput ? IMask(dateInput, { mask: '00/00/0000' }) : null;
 
 		function updateStepIndicator() {
 			const stepElement = document.getElementById('step-info');
